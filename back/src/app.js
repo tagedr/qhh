@@ -84,13 +84,13 @@ app.use((err, req, res, next) => {
     }
 });
 
-const server = https.createServer({
-    key: fs.readFileSync(process.env.CERT_KEY_FILE),
-    cert: fs.readFileSync(process.env.CERT_FILE)
-}, app).listen(SERVER_PORT, () => {
+// const server = https.createServer({
+//     key: fs.readFileSync(process.env.CERT_KEY_FILE),
+//     cert: fs.readFileSync(process.env.CERT_FILE)
+// }, app).listen(SERVER_PORT, () => {
+//     console.log('qhh-back listening at port %s', server.address().port);
+// });
+
+const server = app.listen(SERVER_PORT, () => {
     console.log('qhh-back listening at port %s', server.address().port);
 });
-
-// const server = app.listen(SERVER_PORT, () => {
-//     console.log('Example app listening at port %s', server.address().port);
-// });

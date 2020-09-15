@@ -1,0 +1,16 @@
+{
+  "name": "qhh",
+  "version": "0.3.0",
+  "private": true,
+  "watch": true,
+  "engines": {
+    "node": ">= 12.18.2",
+    "pnpm": ">= 5.4.0"
+  },
+  "scripts": {
+    "front": "pnpm start --prefix ./front",
+    "back": "pnpm start --prefix ./back",
+    "db-image": "docker-compose -f dockerfiles/mysql.yml -p qhh up",
+    "all-in-container": "echo TDB"
+  }
+}
