@@ -1,0 +1,46 @@
+{
+  "name": "qhh-frontend",
+  "version": "0.3.0",
+  "private": true,
+  "watch": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.3",
+    "express": "^4.17.1",
+    "react-grid-layout": "^1.1.1",
+    "bootstrap": "^4.5.2",
+    "reactstrap": "^8.5.1",
+    "react-dropzone": "^4.2.11",
+    "react-hot-keys": "^2.6.0",
+    "moment": "^2.28.0",
+    "react-bootstrap-table": "^4.3.1",
+    "https": "^1.0.0",
+    "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
