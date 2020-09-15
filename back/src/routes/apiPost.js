@@ -80,12 +80,12 @@ export default router => {
 
     // ---------------------------------------------------------------------------------------------
     router.post('/candidateFromAttache', type, async (req, res) => {
-        const addr = authCheck(req, res);
+
 
         if (!addr)
             return;
 
-        const login = SharedData.Logins.get(addr);
+        const login = req.session.login;
 
         if (!req.files || req.files.length === 0)
             res.sendStatus(505);
@@ -153,12 +153,11 @@ export default router => {
         }
      */
     router.post('/tags/update', async (req, res) => {
-        const addr = authCheck(req, res);
 
         if (!addr)
             return;
 
-        const login = SharedData.Logins.get(addr);
+        const login = req.session.login;
 
         let candidateInfo = req.body;
         if (!candidateInfo || !candidateInfo.tags) {
@@ -263,12 +262,12 @@ export default router => {
         }
      */
     router.post('/interview/', async (req, res) => {
-        const addr = authCheck(req, res);
+
 
         if (!addr)
             return;
 
-        const login = SharedData.Logins.get(addr);
+        const login = req.session.login;
 
         let interview = req.body;
         if (!interview || !interview.candidates || !interview.begin) {
@@ -327,13 +326,12 @@ export default router => {
 
     // ---------------------------------------------------------------------------------------------
     router.post('/messages/readTo/:lastMsgId', async (req, res) => {
-        const addr = authCheck(req, res);
 
         const lastMsgId = parseInt(req.params.lastMsgId);
         if (!addr || !Number.isInteger(lastMsgId))
             return;
 
-        const login = SharedData.Logins.get(addr);
+        const login = req.session.login;
 
         await User.query()
             .where({ id: login.userInfo[0].id })
@@ -345,12 +343,8 @@ export default router => {
 
     // ---------------------------------------------------------------------------------------------
     router.post('/interview/:id/delete', async (req, res) => {
-        const addr = authCheck(req, res);
 
-        if (!addr)
-            return;
-
-        const login = SharedData.Logins.get(addr);
+        const login = req.session.login;
 
         let interviewId = req.params.id;
 

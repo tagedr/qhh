@@ -11,7 +11,6 @@ export default router => {
   })
   // ---------------------------------------------------------------------------------------------
   router.get("/candidates", async (req, res) => {
-    if (!authCheck(req, res)) return;
 
     const ret = await Candidate.query()
       .distinct()
@@ -23,8 +22,6 @@ export default router => {
 
   // ---------------------------------------------------------------------------------------------
   router.get("/tags", async (req, res) => {
-    if (!authCheck(req, res)) return;
-
     let ret = await Tag.query()
       .distinct()
       .skipUndefined()
@@ -51,8 +48,6 @@ export default router => {
 
   // ---------------------------------------------------------------------------------------------
   router.get("/candidates/:id", async (req, res) => {
-    if (!authCheck(req, res)) return;
-
     const ret = await Candidate.query()
       .where("candidates.id", req.params.id)
       .eager({
@@ -69,7 +64,6 @@ export default router => {
 
   // ---------------------------------------------------------------------------------------------
   router.get("/tags/:tags/candidates", async (req, res) => {
-    if (!authCheck(req, res)) return;
 
     const tags = JSON.parse(req.params.tags);
     console.log(tags);
@@ -150,7 +144,6 @@ export default router => {
 
   // ---------------------------------------------------------------------------------------------
   router.get("/users", async (req, res) => {
-    // if (!authCheck(req, res)) return;
 
     const ret = await User.query()
       .skipUndefined()
@@ -164,7 +157,6 @@ export default router => {
 
   // ---------------------------------------------------------------------------------------------
   router.get("/interviews", async (req, res) => {
-    if (!authCheck(req, res)) return;
 
     const ret = await Interview.query()
       .eager({
@@ -190,7 +182,6 @@ export default router => {
 
   // ---------------------------------------------------------------------------------------------
   router.get("/users/:id/interviews", async (req, res) => {
-    if (!authCheck(req, res)) return;
 
     const user = await User.query().findById(req.params.id);
 
@@ -205,7 +196,6 @@ export default router => {
 
   // ---------------------------------------------------------------------------------------------
   router.get("/messages/:id", async (req, res) => {
-    if (!authCheck(req, res)) return;
 
     const ret = await Message.query()
       .joinRelation("candidates")
@@ -223,7 +213,6 @@ export default router => {
 
   // ---------------------------------------------------------------------------------------------
   router.get("/messages/:fromDate/system", async (req, res) => {
-    if (!authCheck(req, res)) return;
 
     let fromDate = req.params.fromDate;
 
@@ -260,7 +249,7 @@ export default router => {
       .where("id", ">", lastMsgId)
       .skipUndefined();
     // .andWhere('isSystem', 1);
-    const login = SharedData.Logins.get(addr);
+    const login = req.session.login;
     if (login) {
       SharedData.Logins.set(addr, {
         userInfo: login.userInfo,
@@ -276,7 +265,7 @@ export default router => {
 
     if (!addr) return;
 
-    const login = SharedData.Logins.get(addr);
+    const login = req.session.login;
     let lastMsgId = req.params.lastId;
 
     const ret = await User.query().where("id", login.userInfo[0].id);
