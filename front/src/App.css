@@ -1,0 +1,84 @@
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
+}
+
+.App-header {
+    background-color: #222;
+    height: 150px;
+    padding: 20px;
+    color: white;
+}
+
+.App-title {
+    font-size: 1.5em;
+}
+
+.App-intro {
+    font-size: large;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.container {
+    max-width: 100% !important;
+}
+
+body {
+    height: 100% !important;
+}
+
+html {
+    height: 92vh !important;
+}
+
+#root {
+    height: 100% !important;
+    font-family: "Lucida Console", Monaco, monospace !important;
+}
+
+.dashedStyle {
+    border-width: 1px;
+    border-color: rgb(200, 200, 200);
+    border-style: dashed;
+}
+
+.containerStyle {
+    padding-right: 1px;
+    padding-left: 1px;
+    min-height: 800px;
+    height: 100%;
+    width: 100%;
+}
+
+.bottomDiv {
+    position: fixed;
+    height: 100%;
+    background-color: grey;
+    width: 100%;
+}
+
+li.list-group-item {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body > div:nth-child(4) > div > div.modal.fade.show > div > div {
+
+}
+
+body > div:nth-child(4) > div > div.modal.fade.show > div {
+
+}
