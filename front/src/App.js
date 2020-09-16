@@ -48,7 +48,8 @@ class App extends PureComponent {
       candidateMessages: [],
       logMessages: [],
       users: [],
-      query: ""
+      query: "",
+      lastMessageId: 0
     };
     this.selectedTags = [];
 
@@ -70,6 +71,8 @@ class App extends PureComponent {
       }
     };
 
+    this.loginUser = loginUser.bind(this);
+    this.loginUser();
     this.getCandidates = getCandidates.bind(this);
     this.openCandidateDetails = getCandidateDetails.bind(this);
     this.clickSendNewCandidates = postAttaches.bind(this);
@@ -77,28 +80,25 @@ class App extends PureComponent {
     this.postTags = updateTags.bind(this);
     this.postMessage = postMessage.bind(this);
 
-    this.loginUser = loginUser.bind(this);
-    this.loginUser();
     
     this.logoutUser = logoutUser.bind(this);
-    // this.logoutUser();
 
     this.parseUrlRequest = parseUrlRequest.bind(this);
     this.parseUrlRequest();
 
     this.getTags = getTags.bind(this);
-    // this.getTags();
+    this.getTags();
 
     this.getUsers = getUsers.bind(this);
-    // this.getUsers();
+    this.getUsers();
 
     this.getInterviews = getInterviews.bind(this);
-    // this.getInterviews();
+    this.getInterviews();
 
     this.readAllMessages = readAllMessages.bind(this);
 
     this.fetchSystemMessages = heartbeatAndFetchMsg.bind(this);
-    window.setInterval(this.fetchSystemMessages, process.env.FETCH_TIMEOUT);
+    window.setInterval(this.fetchSystemMessages, process.env.REACT_APP_FETCH_TIMEOUT);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -179,6 +179,7 @@ class App extends PureComponent {
 
               <Row>
                 <CandidatesList
+                  getTags={this.getTags}
                   shortcutInfo={st.shortcutInfo}
                   foundedCandidates={st.foundedCandidates}
                   openCandidateDetails={this.openCandidateDetails}

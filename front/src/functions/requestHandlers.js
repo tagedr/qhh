@@ -23,40 +23,27 @@ export function loginUser(login, pass) {
       return resp.json();
     })
     .then(json => {
+      console.log(json);
       this.setState({
-        credentials: json[0] && json[0].login && json[0].pass ? json[0] : []
+        credentials: json[0] && json[0].login && json[0].pass ? json[0] : [],
+        lastMessageId:
+          json[0] && json[0].lastMessageId ? json[0].lastMessageId : 0
       });
-
-      fetch(urlPrefix + "/userInfo", Object.assign({}, defaultHeaders,
-        {
-          method: "GET"
-        }))
-        .then(resp => {
-          if (resp.ok !== true) return [];
-          return resp.json();
-        })
-        .then(json => {
-          this.setState({
-            lastMessageId:
-              json[0] && json[0].lastMessageId ? json[0].lastMessageId : 0
-          });
-        })
-        .catch(err => {
-          this.setState({
-            logMessages: logRotate(this.state.logMessages, TR.SYS_LOGIN_FAILED)
-          });
-        });
       this.setState({
-        logMessages: logRotate(this.state.logMessages, TR.SYS_LOGIN_OK)
+        logMessages: logRotate(this.state.logMessages, 
+          json[0] && json[0].login && json[0].pass ? TR.SYS_LOGIN_OK : TR.SYS_LOGIN_FAILED)
       });
+      this.parseUrlRequest();
+      this.getInterviews();
+      this.getUsers();
+      this.getTags();
       return json;
-    })
-    .catch(err => {
+    }).catch(err => {
       this.setState({
         logMessages: logRotate(this.state.logMessages, TR.SYS_LOGIN_FAILED)
       });
     });
-}
+};
 
 export function logoutUser() {
   return fetch(urlPrefix + "/logout", Object.assign({}, defaultHeaders,
@@ -78,15 +65,14 @@ export function getCandidates(input) {
   let query = "";
   if (input.tags && input.tags.length > 0) {
     this.selectedTags = input.tags;
-    query =
-      urlPrefix + "/tags/" + JSON.stringify(this.selectedTags) + "/candidates";
+    query = urlPrefix + "/tags/" + JSON.stringify(this.selectedTags) + "/candidates";
   } else if (input.candidates && input.candidates.length > 0) {
     query = urlPrefix + "/candidates/" + JSON.stringify(input.candidates[0].id);
   } else return;
 
   return fetch(query, Object.assign({}, defaultHeaders,
     {
-      method: "GET",
+      method: "GET"
     }))
     .then(response => {
       if (response.ok !== true) {
@@ -104,18 +90,17 @@ export function getCandidates(input) {
       }
       //else alert("Request for selected tags empty or with errors. Check your connection.")
     })
-    .catch(alert);
+    // .catch(alert);
 }
 
 export function heartbeatAndFetchMsg() {
-  if (!this.state.lastMessageId) {
+  if (!this.state.credentials.login) {
     return false;
   }
-  return fetch(
-    urlPrefix + "/messages/" + this.state.lastMessageId + "/system/fromId",
+  return fetch(urlPrefix + "/messages/" + this.state.lastMessageId + "/system/fromId",
     Object.assign({}, defaultHeaders,
       {
-        method: "GET",
+        method: "GET"
       }
     ))
     .then(response => {
@@ -128,9 +113,10 @@ export function heartbeatAndFetchMsg() {
       return response.json();
     })
     .then(json => {
+      console.log(json);
       if (!json) return false;
 
-      if (this.state.lastMessageId !== 0) {
+      if (json.length !== 0) {
         this.setState({
           unreadMessages: json
         });
@@ -178,7 +164,7 @@ export function getCandidateDetails(id) {
             if (resp2.ok !== true) {
               console.error("Error in getting attachment!");
               return false;
-            }  
+            }
             this.getMessages(id);
             let logMsg = {
               BODY: TR.SYS_GET_CANDIDATE_DETAILS_OK.BODY.replace(/__1__/gi, id),
@@ -268,7 +254,15 @@ export function getMessages(candidateId) {
     }))
     .then(response => {
       if (response.ok !== true) {
-        if (response.status === 401) alert(TR.ENTER_LOGIN_AND_PASS);
+        if (response.status === 401) {
+          this.setState({
+            logMessages: logRotate(
+              this.state.logMessages,
+              TR.ENTER_LOGIN_AND_PASS
+            )
+          });
+        }
+          
         return [];
       }
       return response.json();

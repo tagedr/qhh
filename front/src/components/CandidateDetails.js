@@ -42,7 +42,7 @@ class CandidateDetails extends Component {
             nextProps.shortcutInfo &&
             this.props.shortcutInfo &&
             nextProps.shortcutInfo.counter !== this.props.shortcutInfo.counter &&
-            nextProps.shortcutInfo.keyPressed === 'alt+shift+t') {
+            nextProps.shortcutInfo.keyPressed === 'alt+shift+g') {
 
             this.changeTagWindow();
             return true;

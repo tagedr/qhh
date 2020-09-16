@@ -248,21 +248,13 @@ export default router => {
       .where("id", ">", lastMsgId)
       .skipUndefined();
     // .andWhere('isSystem', 1);
-    const login = req.session.credentials.login;
     res.send(ret);
   });
 
   router.get("/userInfo", async (req, res) => {
-    const login = req.session.credentials.login;
-    if (!login) {
-      res.sendStatus(401);
-      return;
-    }
-    let lastMsgId = req.params.lastId;
 
-    const ret = await User.query().where("id", login.userInfo[0].id);
-    delete ret.pass;
-    // .andWhere('isSystem', 1);
+    const ret = await User.query().where("id", req.session.credentials.id);
+    ret.forEach((i) => { delete i.pass });
 
     res.send(ret);
   });

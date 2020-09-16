@@ -203,7 +203,7 @@ class TopPanel extends Component {
             <p key={i} style={{ margin: "0px" }}>
               {time + " "}
               {candIdUrl}
-              {TR.BY + msg.users[0].id + " : " + msg.body.substring(0, 50)}
+              {TR.BY + msg.users[0].login + " : " + msg.body.substring(0, 50)}
             </p>
           );
           break;
@@ -259,7 +259,12 @@ class TopPanel extends Component {
   }
 
   clickLogin() {
-    this.state.authDisabled ? this.props.logoutUser() : this.props.loginUser(this.state.login, this.state.pass);
+    if (this.state.authDisabled) {
+      this.props.logoutUser();
+    }
+    else {
+      this.props.loginUser(this.state.login, this.state.pass);
+    }
   }
 
   clickFind() {

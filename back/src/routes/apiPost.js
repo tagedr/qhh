@@ -152,8 +152,6 @@ export default router => {
      */
     router.post('/tags/update', async (req, res) => {
 
-        const login = req.session.credentials.login;
-
         let candidateInfo = req.body;
         if (!candidateInfo || !candidateInfo.tags) {
             throw createStatusCodeError(505);
@@ -217,7 +215,7 @@ export default router => {
         const body = candidateInfo.tags.map((m) => {
             return m.name
         }).join(", ")
-        addSystemMessage("Tags changed to [ " + body + " ]", 2, login.userInfo[0].id, candidateInfo.id).then();
+        addSystemMessage("Tags changed to [ " + body + " ]", 2, req.session.credentials.id, candidateInfo.id).then();
 
         res.send(ret);
     });
@@ -258,9 +256,8 @@ export default router => {
      */
     router.post('/interview/', async (req, res) => {
 
-        const login = req.session.credentials.login;
-
         let interview = req.body;
+        console.log(interview);
         if (!interview || !interview.candidates || !interview.begin) {
             throw createStatusCodeError(505);
         }
@@ -268,18 +265,39 @@ export default router => {
         let q = {
             begin: interview.begin,
             desc: interview.desc,
-            welcomeUser: [{ id: interview.welcomeUser[0].id }],
-            interviewer: [{ id: interview.interviewer[0].id }],
-            candidates: [{ id: interview.candidates[0].id }]
+
         };
 
+        console.log(q);
         let ret = await Interview.query()
-            .upsertGraph(q, { relate: true, noUpdate: false });
+            .upsertGraph(q, {                 
+                relate: true,
+                unrelate: true,
+                update: false,
+                noUpdate: false,
+                noInsert: false,
+                noDelete: false });
 
+        console.log(ret);
+
+        q = { 
+            candidates: [{ id: interview.candidates[0].id }],
+            welcomeUser: [{ id: interview.welcomeUser[0].id }],
+            interviewer: [{ id: interview.interviewer[0].id }]
+            }
+        let ret2 = await Interview.query()
+        .upsertGraph(q, {                 
+            relate: true,
+            update: true,
+            noUpdate: false,
+            noInsert: true,
+            noDelete: true });
+        
+        console.log(ret2);
         // Create new system message
         const msg = addSystemMessage("Interview is scheduled for: " + moment(interview.begin).format("YY.MM.DD HH:mm") +
             ", interviewer: " + interview.interviewer[0].login,
-            5, login.userInfo[0].id, interview.candidates[0].id);
+            5, req.session.credentials.id, interview.candidates[0].id);
 
         console.log(msg);
 
@@ -320,10 +338,8 @@ export default router => {
         if (!Number.isInteger(lastMsgId))
             return;
 
-        const login = req.session.credentials.login;
-
         await User.query()
-            .where({ id: login.userInfo[0].id })
+            .where({ id: req.session.credentials.id })
             .update({ lastMessageId: lastMsgId }).then();
 
         res.sendStatus(200);
@@ -332,8 +348,6 @@ export default router => {
 
     // ---------------------------------------------------------------------------------------------
     router.post('/interview/:id/delete', async (req, res) => {
-
-        const login = req.session.credentials.login;
 
         let interviewId = req.params.id;
 
@@ -359,7 +373,7 @@ export default router => {
                     intTime = moment(iview.begin).format("YY.MM.DD HH:mm");
             });
             addSystemMessage("Interview [ " + interviewId + " at " + intTime + " ] canceled",
-                6, login.userInfo[0].id, cand[0].id).then();
+                6, req.session.credentials.id, cand[0].id).then();
             res.send(200);
         } else res.sendStatus(400);
     });

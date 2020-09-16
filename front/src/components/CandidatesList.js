@@ -88,6 +88,7 @@ class CandidatesList extends Component {
             style={bgColor}
             key={c.id}
             onClick={() => {
+              this.props.getTags();
               this.openCandidateDetails(c.id);
             }}
           >

@@ -11,8 +11,8 @@ export class Ru {
   static PASSWORD = "пароль";
   static ENTER = "Войти";
   static LOGOUT = "Выйти";
-  static BY = " by ";
-  static ADDED = " added ";
+  static BY = " от ";
+  static ADDED = " добавлен ";
   static UNREAD_NEW_CHANGES = "Новые изменения";
   static ENTER_NEW_TAGS = "Введите новые теги";
   static SEND = "Отправить";
