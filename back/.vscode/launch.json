@@ -10,6 +10,7 @@
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "runtimeExecutable": "pnpm",
+            "sourceMaps":true,
             "runtimeArgs": [
                 "run-script",
                 "start"
@@ -17,7 +18,10 @@
             "resolveSourceMapLocations": [
                 "${workspaceFolder}/**",
                 "!**/node_modules/**"
-            ]
+            ],
+            "outFiles": [
+                "${workspaceFolder}/build/**/*.js"
+            ],
         }
     ]
 }

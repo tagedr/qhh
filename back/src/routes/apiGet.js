@@ -137,7 +137,7 @@ export default router => {
     //   res.sendStatus(401);
     //   return;
     // }
-    console.log(req.session.login)
+    console.log(req.session.credentials.login)
     req.session.destroy();
     res.sendStatus(200);
   });
@@ -208,6 +208,8 @@ export default router => {
       .skipUndefined()
       .orderBy("created");
 
+    console.log(ret);
+
     res.send(ret);
   });
 
@@ -235,9 +237,6 @@ export default router => {
 
   // ---------------------------------------------------------------------------------------------
   router.get("/messages/:lastId/system/fromId", async (req, res) => {
-    const addr = authCheck(req, res);
-
-    if (!addr) return;
 
     let lastMsgId = req.params.lastId;
 
@@ -249,19 +248,12 @@ export default router => {
       .where("id", ">", lastMsgId)
       .skipUndefined();
     // .andWhere('isSystem', 1);
-    const login = req.session.login;
-    if (login) {
-      SharedData.Logins.set(addr, {
-        userInfo: login.userInfo,
-        date: Date.now()
-      });
-    }
-
+    const login = req.session.credentials.login;
     res.send(ret);
   });
 
   router.get("/userInfo", async (req, res) => {
-    const login = req.session.login;
+    const login = req.session.credentials.login;
     if (!login) {
       res.sendStatus(401);
       return;

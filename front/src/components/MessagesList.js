@@ -29,7 +29,8 @@ export default class MessagesList extends Component {
         const chatStyle = {margin: '10px'};
         const sysStyle = {margin: '10px', fontSize: '0.7rem'};
         msgs.forEach((m, i) => {
-            let time = moment(m.updated);
+            console.log(m.updated);
+            let time = moment(m.updated).local();
             const isSysMessage = m.type != 0 ? true : false;
             const user = m.users.length > 0 && m.users[0].login ? m.users[0].login : "Anonymous";
             let compMsg =

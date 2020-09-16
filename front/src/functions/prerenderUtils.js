@@ -1,7 +1,7 @@
 import {Button, ButtonGroup, ListGroupItem} from 'reactstrap'
 import React, {Component} from 'react';
 import moment from "moment/moment";
-import {postTags} from './requestHandlers'
+import {updateTags} from './requestHandlers'
 import {AddInterview} from "../components/modals/Modals";
 import {TR} from "./tr"
 
@@ -40,7 +40,7 @@ export function createStatusSelector(tags, candInfo, openDetailsFunc) {
                             }
                             changedTagList.push(tag);
                             console.log(changedTagList);
-                            postTags(changedTagList, candInfo, openDetailsFunc);
+                            updateTags(changedTagList, candInfo, openDetailsFunc);
                         }}
                 >
                     {name[0]}{name[1]}{name[2]}

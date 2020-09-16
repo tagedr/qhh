@@ -19,7 +19,7 @@ import {
   getCandidateDetails,
   postAttaches,
   getMessages,
-  postTags,
+  updateTags,
   postMessage,
   heartbeatAndFetchMsg,
   parseUrlRequest,
@@ -77,7 +77,7 @@ class App extends PureComponent {
     this.openCandidateDetails = getCandidateDetails.bind(this);
     this.clickSendNewCandidates = postAttaches.bind(this);
     this.getMessages = getMessages.bind(this);
-    this.postTags = postTags.bind(this);
+    this.postTags = updateTags.bind(this);
     this.postMessage = postMessage.bind(this);
 
     this.loginUser = loginUser.bind(this);

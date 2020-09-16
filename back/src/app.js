@@ -52,19 +52,19 @@ const app = express()
         req.session.views = (req.session.views || 0) + 1;
         console.log("session.id: " + req.session.id);
         console.log("session.views: " + req.session.views);
-        console.log("session.login: " + req.session.login);
+        console.log("session.credentials: " + req.session.credentials);
         const url = req.originalUrl.toString().trim();
         console.log("session.url: " + url);
 
+        if (url === '/' || url === '/login' || url === '/logout') {
+            next();
+            return;
+        }
+        if (!req.session || !req.session.credentials) {
+            res.sendStatus(401);
+            return;
+        }
         next();
-        // if (url === '/' || url === '/login' || url === '/logout') {
-        //     next();
-        //     return;
-        // }
-        // if (!req.session || !req.session.login) {
-        //     res.sendStatus(401);
-        //     return;
-        // }
     })
     .use(router)
     .set('json spaces', 2);

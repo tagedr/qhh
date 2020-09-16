@@ -24,20 +24,19 @@ export default router => {
     });
 
     router.post("/login", async (req, res) => {
-        console.log(req.session.views);
         const credentials = req.body;
 
         console.log("post login: " + JSON.stringify(credentials.login));
-        if (!credentials.login && !credentials.pass && !req.session.login) {
+        if (!credentials.login && !credentials.pass && !req.session.credentials) {
             throw createStatusCodeError(504);
         }
 
-        if (req.session.login) {
-            console.log(req.session.login);
+        if (req.session.credentials) {
+            console.log(req.session.credentials);
             console.log("session time: " + req.session.cookie.maxAge / 1000);
 
             const users = await User.query()
-                .where('login', req.session.login)
+                .where('login', req.session.credentials.login)
 
             if (users.length > 0) {
                 console.log("login found in db. auth is ok!");
@@ -47,7 +46,8 @@ export default router => {
         }
 
 
-        req.session.login = credentials.login;
+        req.session.credentials = {};
+        req.session.credentials.login = credentials.login;
         req.session.save();
         function ldapAuth(credentials) {
             console.log("ldap1 ");
@@ -62,7 +62,9 @@ export default router => {
 
                     if (users.length > 0) {
                         console.log("login found in db. auth is ok!");
-                        req.session.login = credentials.login;
+                        req.session.credentials.login = users[0].login;
+                        req.session.credentials.id = users[0].id;
+                        console.log(req.session.credentials);
                         // req.session.save();
                         res.send(users);
                     }
@@ -81,11 +83,7 @@ export default router => {
     // ---------------------------------------------------------------------------------------------
     router.post('/candidateFromAttache', type, async (req, res) => {
 
-
-        if (!addr)
-            return;
-
-        const login = req.session.login;
+        const cred = req.session.credentials;
 
         if (!req.files || req.files.length === 0)
             res.sendStatus(505);
@@ -108,15 +106,15 @@ export default router => {
         });
 
         // check duplicates
-        let names = [];
-        graph.forEach(async (gCandidate) => {
-            const can = await Candidate.query()
-                .where({ name: gCandidate.name })
-                .then();
-            if (can.length > 0) {
-                console.warn("duplicates: " + can.name);
-            }
-        });
+        // let names = [];
+        // graph.forEach(async (gCandidate) => {
+        //     const can = await Candidate.query()
+        //         .where({ name: gCandidate.name })
+        //         .then();
+        //     if (can.length > 0) {
+        //         console.warn("duplicates: " + can.name);
+        //     }
+        // });
         // ------
 
         const insertedGraph = await
@@ -125,7 +123,7 @@ export default router => {
             });
 
         insertedGraph.forEach((cand) => {
-            addSystemMessage("Candidate added", 1, login.userInfo[0].id, cand.id).then();
+            addSystemMessage("Candidate added", 1, cred.id, cand.id).then();
         });
 
         res.send(insertedGraph);
@@ -154,10 +152,7 @@ export default router => {
      */
     router.post('/tags/update', async (req, res) => {
 
-        if (!addr)
-            return;
-
-        const login = req.session.login;
+        const login = req.session.credentials.login;
 
         let candidateInfo = req.body;
         if (!candidateInfo || !candidateInfo.tags) {
@@ -263,11 +258,7 @@ export default router => {
      */
     router.post('/interview/', async (req, res) => {
 
-
-        if (!addr)
-            return;
-
-        const login = req.session.login;
+        const login = req.session.credentials.login;
 
         let interview = req.body;
         if (!interview || !interview.candidates || !interview.begin) {
@@ -310,8 +301,6 @@ export default router => {
             }
      */
     router.post('/messages/', async (req, res) => {
-        if (!authCheck(req, res))
-            return;
 
         let message = req.body;
         if (!message || !message.candidates || !message.users) {
@@ -328,10 +317,10 @@ export default router => {
     router.post('/messages/readTo/:lastMsgId', async (req, res) => {
 
         const lastMsgId = parseInt(req.params.lastMsgId);
-        if (!addr || !Number.isInteger(lastMsgId))
+        if (!Number.isInteger(lastMsgId))
             return;
 
-        const login = req.session.login;
+        const login = req.session.credentials.login;
 
         await User.query()
             .where({ id: login.userInfo[0].id })
@@ -344,7 +333,7 @@ export default router => {
     // ---------------------------------------------------------------------------------------------
     router.post('/interview/:id/delete', async (req, res) => {
 
-        const login = req.session.login;
+        const login = req.session.credentials.login;
 
         let interviewId = req.params.id;
 

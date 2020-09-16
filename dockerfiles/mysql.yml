@@ -9,6 +9,7 @@ services:
       - "31013:3306"
     environment:
       MYSQL_ROOT_PASSWORD: dbpassword
+      TZ: "Europe/Moscow"
     volumes:
       - ./db_dumps:/docker-entrypoint-initdb.d
 

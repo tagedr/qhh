@@ -215,7 +215,7 @@ export function getCandidateDetails(id) {
 
 export function postAttaches(refreshCallback) {
   if (this.state.attaches.length === 0 || this.selectedTags.length === 0) {
-    alert("Selected tags must be not empty!");
+    alert("Selected tags must not be empty!");
     return;
   }
 
@@ -249,7 +249,7 @@ export function postAttaches(refreshCallback) {
       if (!newAdded) t = t.concat([{ name: "new", candidates: json }]);
       //json[0].id .. name
       json.forEach(c => {
-        postTags(t, c);
+        updateTags(t, c);
       });
       if (refreshCallback) {
         sleep(2000).then(() => {
@@ -357,7 +357,7 @@ export function getInterviews() {
     });
 }
 
-export function postTags(tags, candidateInfo, reloadDetailsCallback) {
+export function updateTags(tags, candidateInfo, reloadDetailsCallback) {
   if (!candidateInfo || !tags || tags.length === 0) return;
 
   let ret = { id: candidateInfo.id, name: candidateInfo.name, tags: tags };
