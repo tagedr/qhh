@@ -49,6 +49,7 @@ export class Ru {
   static SYS_POST_MESSAGE_FAILED = { BODY: "Сообщение не отправлено (перезагрузите страницу и попробуйте снова)", LEVEL: "warning" };
   static SYS_GET_CANDIDATE_DETAILS_FAILED = { BODY: "Ошибка получения резюме №__1__", LEVEL: "danger" };
   static SYS_GET_CANDIDATE_DETAILS_OK = { BODY: "Резюме №__1__ скачано", LEVEL: "light" };
+  static DELETE = "Удалить";
 }
 
 export class En {
@@ -88,6 +89,7 @@ export class En {
   static TAGS_CHANGED = "Tags changes";
   static ACTIONS = "Actions";
   static READ_EVERYTHING = "I read everything";
+  static DELETE = "Delete";
 }
 
 export const TR = Ru;
