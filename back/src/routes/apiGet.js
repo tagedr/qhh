@@ -261,11 +261,11 @@ export default router => {
   });
 
   router.get("/userInfo", async (req, res) => {
-    const addr = authCheck(req, res);
-
-    if (!addr) return;
-
     const login = req.session.login;
+    if (!login) {
+      res.sendStatus(401);
+      return;
+    }
     let lastMsgId = req.params.lastId;
 
     const ret = await User.query().where("id", login.userInfo[0].id);

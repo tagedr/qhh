@@ -9,7 +9,7 @@ module.exports = {
             password: process.env.DB_PASSWORD,
             database: process.env.DB_DATABASE,
             charset: process.env.DB_CHARSET,
-            debug: process.env.DB_DEBUG
+            debug: eval(process.env.DB_DEBUG)
         }
     },
 };

@@ -54,7 +54,6 @@ export default async function loginLdap(username, password, callback) {
         } else {
           res.on("searchEntry", function (entry) {
             // console.log("Entry: ", JSON.stringify(entry.object["dn"]));
-            console.log("XXXXX "+process.env.LDAP_LOGIN_FILTER);
             dnMap.set(entry.object[process.env.LDAP_LOGIN_FILTER], entry.object["dn"]);
           });
           res.on("searchReference", function (referral) {

@@ -10,16 +10,14 @@ const defaultHeaders = {
 }
 
 export function postTest() {
-  return fetch(urlPrefix + "/post-test", 
+  return fetch(urlPrefix + "/post-test", Object.assign({}, defaultHeaders,
     {
       method: "POST",
-      credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
-        "Connection": "keep-alive",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({"credentials":"1"})
-    })
+      body: JSON.stringify({ "credentials": "1" })
+    }))
     .then(resp => {
       if (resp.ok !== true) return [];
       return resp.json();
@@ -44,9 +42,10 @@ export function loginUser(login, pass) {
         credentials: json[0] && json[0].login && json[0].pass ? json[0] : []
       });
 
-      fetch(urlPrefix + "/userInfo", {
-        method: "GET"
-      })
+      fetch(urlPrefix + "/userInfo", Object.assign({}, defaultHeaders,
+        {
+          method: "GET"
+        }))
         .then(resp => {
           if (resp.ok !== true) return [];
           return resp.json();
@@ -103,8 +102,6 @@ export function getCandidates(input) {
   return fetch(query, Object.assign({}, defaultHeaders,
     {
       method: "GET",
-      headers: new Headers(),
-      // cache: "default"
     }))
     .then(response => {
       if (response.ok !== true) {
@@ -134,8 +131,6 @@ export function heartbeatAndFetchMsg() {
     Object.assign({}, defaultHeaders,
       {
         method: "GET",
-        // cache: "default",
-        credentials: 'include'
       }
     ))
     .then(response => {
@@ -167,8 +162,6 @@ export function getCandidateDetails(id) {
   return fetch(urlPrefix + "/candidates/" + id, Object.assign({}, defaultHeaders,
     {
       method: "GET",
-      headers: new Headers(),
-      cache: "default"
     }))
     .then(resp1 => {
       if (resp1.ok !== true) {
@@ -191,12 +184,10 @@ export function getCandidateDetails(id) {
             ? process.env.UPLOAD_URL_PREFIX
             : urlPrefix) +
           "/uploads/" +
-          json[0].attaches[0].fileName,
-          {
-            method: "GET",
-            headers: new Headers(),
-            cache: "default"
-          }
+          json[0].attaches[0].fileName, Object.assign({}, defaultHeaders,
+            {
+              method: "GET",
+            })
         )
           .then(resp2 => {
             if (resp2.ok !== true) throw "upload get not ok";
@@ -482,13 +473,13 @@ export function readAllMessages(id) {
 
   return fetch(urlPrefix + "/messages/readTo/" + id, Object.assign({}, defaultHeaders,
     {
-    method: "POST",
-  })).then(response => {
-    this.setState({
-      lastMessageId: id
+      method: "POST",
+    })).then(response => {
+      this.setState({
+        lastMessageId: id
+      });
+      return response.ok;
     });
-    return response.ok;
-  });
 }
 
 function sleep(ms) {

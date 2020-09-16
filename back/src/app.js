@@ -31,9 +31,6 @@ const app = express()
     .use(cors(corsOptions))
     .use(function (req, res, next) {
         console.log(req.headers.origin);
-        res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-        res.set("Access-Control-Allow-Origin", req.headers.origin);
-        res.set("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization, Set-Cookie");
         next();
     })
     .set('trust proxy', 1)
@@ -84,13 +81,13 @@ app.use((err, req, res, next) => {
     }
 });
 
-// const server = https.createServer({
-//     key: fs.readFileSync(process.env.CERT_KEY_FILE),
-//     cert: fs.readFileSync(process.env.CERT_FILE)
-// }, app).listen(SERVER_PORT, () => {
-//     console.log('qhh-back listening at port %s', server.address().port);
-// });
-
-const server = app.listen(SERVER_PORT, () => {
+const server = https.createServer({
+    key: fs.readFileSync(process.env.CERT_KEY_FILE),
+    cert: fs.readFileSync(process.env.CERT_FILE)
+}, app).listen(SERVER_PORT, () => {
     console.log('qhh-back listening at port %s', server.address().port);
 });
+
+// const server = app.listen(SERVER_PORT, () => {
+//     console.log('qhh-back listening at port %s', server.address().port);
+// });
