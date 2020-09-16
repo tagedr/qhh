@@ -10,7 +10,7 @@ import {
   Col,
   Row
 } from "reactstrap";
-import { createTagsList, prepareInterviews } from "../functions/prerenderUtils";
+import { createTagsList } from "../functions/prerenderUtils";
 import { Interviews } from "./modals/Modals";
 import { TR } from "../functions/tr";
 import moment from "moment/moment";

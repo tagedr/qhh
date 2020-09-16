@@ -28,8 +28,7 @@ import {
   getTags,
   getInterviews,
   getUsers,
-  readAllMessages,
-  postTest
+  readAllMessages
 } from "./functions/requestHandlers";
 
 class App extends PureComponent {
@@ -70,8 +69,6 @@ class App extends PureComponent {
         });
       }
     };
-
-    postTest();
 
     this.getCandidates = getCandidates.bind(this);
     this.openCandidateDetails = getCandidateDetails.bind(this);
@@ -250,7 +247,7 @@ class App extends PureComponent {
   onKeyDown(keyNm) {
     this.setState({
       shortcutInfo: {
-        counter: this.state.shortcutInfo.counter++,
+        counter: this.state.shortcutInfo.counter+1,
         keyPressed: keyNm
       }
     });

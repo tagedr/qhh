@@ -137,7 +137,7 @@ export default router => {
     //   res.sendStatus(401);
     //   return;
     // }
-    console.log(req.session.credentials.login)
+    console.log(req.session.credentials)
     req.session.destroy();
     res.sendStatus(200);
   });

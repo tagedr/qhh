@@ -28,10 +28,6 @@ export default class Modals extends Component {
 export class Interviews extends PureComponent {
 
     render() {
-        const cellEdit = {
-            mode: 'click',
-            blurToSave: true
-        };
         let data = this.props.data.slice();
         for (let i = 0; i < data.length; i++) {
             data[i].actions = [];
@@ -77,9 +73,6 @@ export class Interviews extends PureComponent {
 }
 
 export class ChangeCandidateTags extends PureComponent {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         let initTags = [];

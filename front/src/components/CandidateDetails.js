@@ -26,7 +26,7 @@ class CandidateDetails extends Component {
         // console.log("check details!");
         // console.log(this.state.messages.length);
         // console.log(nextProps.messages);
-        if (nextProps.messages && ((nextProps.messages !== this.state.messages) || nextProps.messages.length === 0 && this.state.messages.length !== 0)) {
+        if (nextProps.messages && ((nextProps.messages !== this.state.messages) || nextProps.messages.length !== this.state.messages.length)) {
             this.setState({
                 messages: nextProps.messages
             });
@@ -48,7 +48,7 @@ class CandidateDetails extends Component {
             return true;
         }
 
-        if (this.props.candidateInfo === null && nextProps.candidateInfo || this.props.candidateInfo !== nextProps.candidateInfo) {
+        if ((this.props.candidateInfo === null && nextProps.candidateInfo) || this.props.candidateInfo !== nextProps.candidateInfo) {
             return true;
         }
 

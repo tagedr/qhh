@@ -121,14 +121,16 @@ class TopPanel extends Component {
                 placeholder={TR.LOGIN}
                 defaultValue={this.props.credentials.login}
                 onChange={e => {
-                  this.state.login = e.target.value;
+                  this.setState({
+                    login: e.target.value
+                  })
                 }}
               />
               <Input
                 disabled={this.state.authDisabled}
                 type="password"
                 placeholder={TR.PASSWORD}
-                onChange={e => (this.state.pass = `${e.target.value}`)}
+                onChange={e => (this.setState({ pass: `${e.target.value}` }))}
               />
               <Button
                 color={this.state.authDisabled ? "link" : "primary"}
@@ -136,7 +138,7 @@ class TopPanel extends Component {
                 type="submit"
                 form="form1"
               >
-                {this.state.authDisabled ? TR.LOGOUT :TR.ENTER }
+                {this.state.authDisabled ? TR.LOGOUT : TR.ENTER}
               </Button>
             </InputGroup>
           </Col>
@@ -163,7 +165,7 @@ class TopPanel extends Component {
     let tagsChanges = [];
     let interviewsChanges = [];
 
-    const urlCandidateIdPrefix = process.env.REACT_APP_CLIENT_URL_PREFIX+":"+process.env.REACT_APP_PORT + "/candidate?id=";
+    const urlCandidateIdPrefix = process.env.REACT_APP_CLIENT_URL_PREFIX + ":" + process.env.REACT_APP_PORT + "/candidate?id=";
 
     unreadMsgs.reverse();
     unreadMsgs.forEach((msg, i) => {
@@ -221,6 +223,8 @@ class TopPanel extends Component {
         case 6:
           interviewsChanges.push(changesMessage);
           break;
+        default:
+          break;
       }
     });
 
@@ -250,7 +254,7 @@ class TopPanel extends Component {
         </Button>
       </div>
     );
-    
+
     this.props.toggleModal(TR.UNREAD_NEW_CHANGES, body);
   }
 

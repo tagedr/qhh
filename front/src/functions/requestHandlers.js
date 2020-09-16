@@ -9,21 +9,6 @@ const defaultHeaders = {
   credentials: 'include'
 }
 
-export function postTest() {
-  return fetch(urlPrefix + "/post-test", Object.assign({}, defaultHeaders,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ "credentials": "1" })
-    }))
-    .then(resp => {
-      if (resp.ok !== true) return [];
-      return resp.json();
-    })
-}
-
 export function loginUser(login, pass) {
   return fetch(urlPrefix + "/login", Object.assign({}, defaultHeaders,
     {
@@ -80,7 +65,7 @@ export function logoutUser() {
     }))
     .then(response => {
       if (response.ok !== true) {
-        return;
+        return true;
       }
       this.setState({
         credentials: []
@@ -190,7 +175,10 @@ export function getCandidateDetails(id) {
             })
         )
           .then(resp2 => {
-            if (resp2.ok !== true) throw "upload get not ok";
+            if (resp2.ok !== true) {
+              console.error("Error in getting attachment!");
+              return false;
+            }  
             this.getMessages(id);
             let logMsg = {
               BODY: TR.SYS_GET_CANDIDATE_DETAILS_OK.BODY.replace(/__1__/gi, id),

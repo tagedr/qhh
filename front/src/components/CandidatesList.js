@@ -3,8 +3,6 @@ import { ListGroup, ListGroupItem } from "reactstrap";
 import "../App.css";
 import { getColorByTagPriority } from "../functions/prerenderUtils";
 
-const MAX_ID_LENGTH = 6;
-
 class CandidatesList extends Component {
   constructor(props) {
     super(props);

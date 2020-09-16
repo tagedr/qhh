@@ -1,9 +1,9 @@
-import {Button, ButtonGroup, ListGroupItem} from 'reactstrap'
-import React, {Component} from 'react';
+import { Button, ButtonGroup, ListGroupItem } from 'reactstrap'
+import React, { Component } from 'react';
 import moment from "moment/moment";
-import {updateTags} from './requestHandlers'
-import {AddInterview} from "../components/modals/Modals";
-import {TR} from "./tr"
+import { updateTags } from './requestHandlers'
+import { AddInterview } from "../components/modals/Modals";
+import { TR } from "./tr"
 
 
 export function createStatusSelector(tags, candInfo, openDetailsFunc) {
@@ -14,7 +14,7 @@ export function createStatusSelector(tags, candInfo, openDetailsFunc) {
             let activeStatusStyle = '';
             candInfo.tags.forEach((cTag, cI) => {
                 if (tag.id === cTag.id) {
-                    activeStatusStyle = {borderWidth: "5px"};
+                    activeStatusStyle = { borderWidth: "5px" };
                     deactivatedTagIndex.push(cI);
                 }
             });
@@ -29,19 +29,19 @@ export function createStatusSelector(tags, candInfo, openDetailsFunc) {
             const name = tag.name.split("");
             ret = ret.concat(
                 <Button key={i}
-                        style={Object.assign({}, activeStatusStyle, statusStyle)}
-                        onClick={() => {
-                            let changedTagList = candInfo.tags.slice();
-                            deactivatedTagIndex.forEach((t) => {
-                                changedTagList.splice(t, 1);
-                            });
-                            if (tag.name === "interview") {
-                                addInterviewModal.bind(this)();
-                            }
-                            changedTagList.push(tag);
-                            console.log(changedTagList);
-                            updateTags(changedTagList, candInfo, openDetailsFunc);
-                        }}
+                    style={Object.assign({}, activeStatusStyle, statusStyle)}
+                    onClick={() => {
+                        let changedTagList = candInfo.tags.slice();
+                        deactivatedTagIndex.forEach((t) => {
+                            changedTagList.splice(t, 1);
+                        });
+                        if (tag.name === "interview") {
+                            addInterviewModal.bind(this)();
+                        }
+                        changedTagList.push(tag);
+                        console.log(changedTagList);
+                        updateTags(changedTagList, candInfo, openDetailsFunc);
+                    }}
                 >
                     {name[0]}{name[1]}{name[2]}
                 </Button>)
@@ -67,11 +67,11 @@ function addInterviewModal() {
 export function createTagsList(tags) {
     let ret = [];
     tags.forEach((t, i) => {
-        const bgColor = {backgroundColor: "#" + t.color, textAlign: "center"};
+        const bgColor = { backgroundColor: "#" + t.color, textAlign: "center" };
         const link = "/tag?name=" + t.name;
         ret = ret.concat(
             (<ListGroupItem style={bgColor}
-                            key={i}
+                key={i}
             >
                 <a href={link}>{t.name} ({t.size})</a>
             </ListGroupItem>)
@@ -82,13 +82,13 @@ export function createTagsList(tags) {
 
 export function candidateFormatter(cell, row, enumObject, index) {
     return (
-        <CandidateFormatter key={index} data={cell}/>
+        <CandidateFormatter key={index} data={cell} />
     );
 }
 
 export function userFormatter(cell, row, enumObject, index) {
     return (
-        <UserFormatter key={index} data={cell}/>
+        <UserFormatter key={index} data={cell} />
     );
 }
 
@@ -96,13 +96,13 @@ export function actionFormatter(cell, row, enumObject, index) {
     console.warn(cell);
     let ret = [];
     cell.forEach((e) => {
-        ret.push(<Button key={index} color="link" style={{margin: "0px", padding: "0px"}}
-                         onClick={e.callback}
+        ret.push(<Button key={index} color="link" style={{ margin: "0px", padding: "0px" }}
+            onClick={e.callback}
         >
             {e.label}
         </Button>);
     });
-    return (<div style={{margin: "0px", padding: "0px"}}>{ret}</div>);
+    return (<div style={{ margin: "0px", padding: "0px" }}>{ret}</div>);
 }
 
 
@@ -128,9 +128,7 @@ class UserFormatter extends Component {
         const name = tpData && tpData.login ? tpData.login : 'empty';
         return (
             <div>
-                <a>
-                    {name}
-                </a>
+                {name}
             </div>
         );
     }
@@ -142,12 +140,10 @@ export function dateFormatter(cell, row, enumObject, index) {
     );
 }
 
-//2018-07-17T06:59:00.000Z
+//2020-07-17T06:59:00.000Z
 class DateFormatter extends Component {
     render() {
-        let time = moment(this.props.data);
-        let r = time.utcOffset(0, true);
-
+        let time = moment(this.props.data).local();
         return (
             <div>
                 {time.format("MM.DD")} {time.format("HH:mm")}
@@ -157,7 +153,7 @@ class DateFormatter extends Component {
 }
 
 export function getColorByTagPriority(tags) {
-    let ret = {priority: -1};
+    let ret = { priority: -1 };
     tags.forEach((c) => {
         ret = c.priority && c.priority > ret.priority ? c : ret;
     });
