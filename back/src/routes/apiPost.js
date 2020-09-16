@@ -265,35 +265,25 @@ export default router => {
         let q = {
             begin: interview.begin,
             desc: interview.desc,
-
+            welcomeUser: { id: interview.welcomeUser[0].id },
+            interviewer: { id: interview.interviewer[0].id },
+            candidates: { id: interview.candidates[0].id }
         };
+        let ret={};
+        try {
+            await transaction(Interview, async (Interview, trx) => {
+                await trx.raw("SET FOREIGN_KEY_CHECKS=0;");
+                await Interview.query(trx)
+                    .upsertGraph(q, { relate: true, noUpdate: false });
+                await trx.raw("SET FOREIGN_KEY_CHECKS=1;");
+            })
+        } catch (err) {
+            console.log(
+                err
+            );
+        }
 
-        console.log(q);
-        let ret = await Interview.query()
-            .upsertGraph(q, {                 
-                relate: true,
-                unrelate: true,
-                update: false,
-                noUpdate: false,
-                noInsert: false,
-                noDelete: false });
 
-        console.log(ret);
-
-        q = { 
-            candidates: [{ id: interview.candidates[0].id }],
-            welcomeUser: [{ id: interview.welcomeUser[0].id }],
-            interviewer: [{ id: interview.interviewer[0].id }]
-            }
-        let ret2 = await Interview.query()
-        .upsertGraph(q, {                 
-            relate: true,
-            update: true,
-            noUpdate: false,
-            noInsert: true,
-            noDelete: true });
-        
-        console.log(ret2);
         // Create new system message
         const msg = addSystemMessage("Interview is scheduled for: " + moment(interview.begin).format("YY.MM.DD HH:mm") +
             ", interviewer: " + interview.interviewer[0].login,
