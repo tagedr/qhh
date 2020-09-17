@@ -34,7 +34,7 @@ import {
 class App extends PureComponent {
   constructor(props) {
     super(props)
-    
+
     this.state = {
       isModalOpen: false,
       foundedCandidates: [],
@@ -79,7 +79,7 @@ class App extends PureComponent {
     this.updateTags = updateTags.bind(this);
     this.postMessage = postMessage.bind(this);
 
-    
+
     this.logoutUser = logoutUser.bind(this);
 
     this.parseUrlRequest = parseUrlRequest.bind(this);
@@ -115,7 +115,7 @@ class App extends PureComponent {
         query: this.state.query
       });
     }
-//    console.log("APP_DIDUPDATE");
+    //    console.log("APP_DIDUPDATE");
   }
 
   render() {
@@ -124,6 +124,86 @@ class App extends PureComponent {
     const attLngth = st.attaches.length;
     const selCandInfo = st.selectedCandidateInfo;
 
+    const topPanel = (<TopPanel
+      shortcutInfo={st.shortcutInfo}
+      getCandidates={this.getCandidates}
+      unreadMessages={st.unreadMessages}
+      credentials={st.credentials}
+      loginUser={this.loginUser}
+      logoutUser={this.logoutUser}
+      readAllMessages={this.readAllMessages}
+      toggleModal={this.toggleModal}
+      query={st.query}
+    />)
+
+    const dropZone = (<div>
+      <Dropzone
+        style={{ width: "100%" }}
+        onDrop={this.onDrop.bind(this)}
+      >
+        <p style={{ textAlign: "center" }}>
+          {TR.DROP_NEW_CANDIDATES_HERE}
+        </p>
+      </Dropzone>
+      <Button
+        style={{ textAlign: "center", width: "100%" }}
+        color={attLngth > 0 ? "secondary" : "link"}
+        disabled={attLngth === 0}
+        onClick={() => {
+          this.clickSendNewCandidates(this.onKeyDown.bind(this));
+        }}
+      >
+        {attLngth === 0
+          ? TR.NOTHING_TO_UPLOAD
+          : TR.UPLOAD + attLngth + " " + TR._NEW_CANDIDATES}
+      </Button>
+    </div>)
+
+    const candidatesList = (<CandidatesList
+      getTags={this.getTags}
+      shortcutInfo={st.shortcutInfo}
+      foundedCandidates={st.foundedCandidates}
+      openCandidateDetails={this.openCandidateDetails}
+    />)
+
+    const attacheViewer = (<AttacheViewer
+      fileName={selCandInfo && selCandInfo.attaches && selCandInfo.attaches.length > 0
+        ? selCandInfo.attaches[0].fileName
+        : null
+      }
+    />)
+    const candidateDetails = (<CandidateDetails
+      getTags={this.getTags}
+      updateTags={this.updateTags}
+      candidateInfo={selCandInfo}
+      messages={st.candidateMessages}
+      postMessage={this.postMessage}
+      toggleModal={this.toggleModal}
+      shortcutInfo={st.shortcutInfo}
+      openCandidateDetails={this.openCandidateDetails}
+      getCandidates={this.getCandidates}
+      credentials={st.credentials}
+      tagsInfo={st.tags ? st.tags : []}
+      users={this.state.users}
+    />)
+
+    const bottomPanel = (<BottomPanel
+      toggleModal={this.toggleModal}
+      interviews={st.interviews}
+      tags={st.tags}
+      getTags={this.getTags}
+      getInterviews={this.getInterviews}
+      shortcutInfo={st.shortcutInfo}
+      logMessages={st.logMessages}
+    />)
+
+    const modals = (<Modals
+      isOpen={st.isModalOpen}
+      title={st.modalTitle}
+      body={st.modalBody}
+      toggle={this.toggleModal}
+      style={st.modalStyle}
+    />)
     return (
       <HotKeys
         keyName={"ctrl+enter, up, down, alt+shift+t, alt+t, ctrl+space"}
@@ -132,109 +212,35 @@ class App extends PureComponent {
         <Container className="containerStyle">
           <Row>
             <Col className="dashedStyle">
-            <TopPanel
-                shortcutInfo={st.shortcutInfo}
-                getCandidates={this.getCandidates}
-                unreadMessages={st.unreadMessages}
-                credentials={st.credentials}
-                loginUser={this.loginUser}
-                logoutUser={this.logoutUser}
-                readAllMessages={this.readAllMessages}
-                toggleModal={this.toggleModal}
-                query={st.query}
-              />
+              {topPanel}
             </Col>
           </Row>
 
           <Row style={{ minHeight: "880px", height: "100%" }}>
-            <Col
-              md="2"
-              className="dashedStyle"
-              style={{ overflowY: "scroll", height: "100%" }}
-            >
+            <Col md="2" className="dashedStyle" style={{ overflowY: "scroll", height: "100%" }}>
               <Row className="dashedStyle">
-                <Dropzone
-                  style={{ width: "100%" }}
-                  onDrop={this.onDrop.bind(this)}
-                >
-                  <p style={{ textAlign: "center" }}>
-                    {TR.DROP_NEW_CANDIDATES_HERE}
-                  </p>
-                </Dropzone>
-
-                <Button
-                  style={{ textAlign: "center", width: "100%" }}
-                  color={attLngth > 0 ? "secondary" : "link"}
-                  disabled={attLngth === 0}
-                  onClick={() => {
-                    this.clickSendNewCandidates(this.onKeyDown.bind(this));
-                  }}
-                >
-                  {attLngth === 0
-                    ? TR.NOTHING_TO_UPLOAD
-                    : TR.UPLOAD + attLngth + " " + TR._NEW_CANDIDATES}
-                </Button>
+                {dropZone}
               </Row>
 
               <Row>
-                <CandidatesList
-                  getTags={this.getTags}
-                  shortcutInfo={st.shortcutInfo}
-                  foundedCandidates={st.foundedCandidates}
-                  openCandidateDetails={this.openCandidateDetails}
-                />
+                {candidatesList}
               </Row>
             </Col>
 
             <Col md="7" style={{ margin: 0, padding: 0 }}>
-              <AttacheViewer
-                fileName={
-                  selCandInfo &&
-                  selCandInfo.attaches &&
-                  selCandInfo.attaches.length > 0
-                    ? selCandInfo.attaches[0].fileName
-                    : null
-                }
-              />
+              {attacheViewer}
             </Col>
 
             <Col md="3" className="dashedStyle" style={{ padding: "0" }}>
-              <CandidateDetails
-                getTags={this.getTags}
-                updateTags={this.updateTags}
-                candidateInfo={selCandInfo}
-                messages={st.candidateMessages}
-                postMessage={this.postMessage}
-                toggleModal={this.toggleModal}
-                shortcutInfo={st.shortcutInfo}
-                openCandidateDetails={this.openCandidateDetails}
-                getCandidates={this.getCandidates}
-                credentials={st.credentials}
-                tagsInfo={st.tags ? st.tags : []}
-                users={this.state.users}
-              />
+              {candidateDetails}
             </Col>
           </Row>
 
           <Row className="dashedStyle">
-            <BottomPanel
-              toggleModal={this.toggleModal}
-              interviews={st.interviews}
-              tags={st.tags}
-              getTags={this.getTags}
-              getInterviews={this.getInterviews}
-              shortcutInfo={st.shortcutInfo}
-              logMessages={st.logMessages}
-            />
+            {bottomPanel}
           </Row>
 
-          <Modals
-            isOpen={st.isModalOpen}
-            title={st.modalTitle}
-            body={st.modalBody}
-            toggle={this.toggleModal}
-            style={st.modalStyle}
-          />
+          {modals}
         </Container>
       </HotKeys>
     );
@@ -249,7 +255,7 @@ class App extends PureComponent {
   onKeyDown(keyNm) {
     this.setState({
       shortcutInfo: {
-        counter: this.state.shortcutInfo.counter+1,
+        counter: this.state.shortcutInfo.counter + 1,
         keyPressed: keyNm
       }
     });
