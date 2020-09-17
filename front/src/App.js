@@ -51,7 +51,6 @@ class App extends PureComponent {
       query: "",
       lastMessageId: 0
     };
-    this.selectedTags = [];
 
     this.toggleModal = (title, body, style) => {
       if (!title || !body || typeof title !== "string") {
@@ -77,7 +76,7 @@ class App extends PureComponent {
     this.openCandidateDetails = getCandidateDetails.bind(this);
     this.clickSendNewCandidates = postAttaches.bind(this);
     this.getMessages = getMessages.bind(this);
-    this.postTags = updateTags.bind(this);
+    this.updateTags = updateTags.bind(this);
     this.postMessage = postMessage.bind(this);
 
     
@@ -201,13 +200,15 @@ class App extends PureComponent {
 
             <Col md="3" className="dashedStyle" style={{ padding: "0" }}>
               <CandidateDetails
-                postTags={this.postTags}
+                getTags={this.getTags}
+                updateTags={this.updateTags}
                 candidateInfo={selCandInfo}
                 messages={st.candidateMessages}
                 postMessage={this.postMessage}
                 toggleModal={this.toggleModal}
                 shortcutInfo={st.shortcutInfo}
                 openCandidateDetails={this.openCandidateDetails}
+                getCandidates={this.getCandidates}
                 credentials={st.credentials}
                 tagsInfo={st.tags ? st.tags : []}
                 users={this.state.users}

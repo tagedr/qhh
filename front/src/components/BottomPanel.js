@@ -123,7 +123,6 @@ class BottomPanel extends Component {
               color={logLevel}
               isOpen={this.state.btnDropLogMsgs}
               toggle={() => {
-                console.log("logState: " + this.state.btnDropLogMsgs);
                 this.setState({ btnDropLogMsgs: !this.state.btnDropLogMsgs });
               }}
             >

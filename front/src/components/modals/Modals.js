@@ -26,25 +26,12 @@ export default class Modals extends Component {
 }
 
 export class Interviews extends PureComponent {
-    handleDeleteButtonClick = (onClick) => {
-        console.log(this.props.data.length);
-        onClick();
-    }
-
-    createCustomDeleteButton = (onClick) => {
-        return (
-            <DeleteButton
-                btnText={TR.DELETE}
-                btnContextual='btn-success'
-                className='my-custom-class'
-                btnGlyphicon='glyphicon-edit'
-                onClick={e =>
-                    this.handleDeleteButtonClick(onClick)
-                } />
-        );
-    }
-    render() {
-        let data = this.props.data.slice();
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: this.props.data
+        }
+        let data = this.state.data.slice();
         for (let i = 0; i < data.length; i++) {
             data[i].actions = [];
             data[i].actions.push(
@@ -52,19 +39,18 @@ export class Interviews extends PureComponent {
                     label: "[X]",
                     callback: (() => {
                         delInterview(data[i].id);
-                        delete data[i];
+                        let d = this.state.data.slice();
+                        delete d[i];
+                        this.setState({
+                            data: d
+                        })
                     })
                 })
         }
-
-        const options = {
-            deleteBtn: this.createCustomDeleteButton
-        };
-        const selectRow = {
-            mode: 'checkbox'
-        };
+    }
+    render() {
         return (
-            <BootstrapTable selectRow={selectRow} options={options} deleteRow data={data} height='500px' scrollTop={'Bottom'} hover condensed >
+            <BootstrapTable data={this.state.data} height='500px' scrollTop={'Bottom'} hover condensed >
                 <TableHeaderColumn width='46px' dataSort={true} isKey dataField='id'>
                     #
                 </TableHeaderColumn>
@@ -86,6 +72,9 @@ export class Interviews extends PureComponent {
                 </TableHeaderColumn>
                 <TableHeaderColumn width='330px' dataSort={true} dataField='desc'>
                     {TR.COMMENTS}
+                </TableHeaderColumn>
+                <TableHeaderColumn width='70px' dataField='actions' dataFormat={actionFormatter}>
+                    {TR.ACTIONS}
                 </TableHeaderColumn>
             </BootstrapTable>
         );
@@ -117,7 +106,7 @@ export class ChangeCandidateTags extends PureComponent {
             }
 
             cTags = (cTags && cTags.length > 0) ? ret : [];
-            this.props.postTags(cTags, this.props.candidateInfo, this.props.openDetailsFunc)
+            this.props.updateTags(cTags, this.props.candidateInfo, this.props.openCandidateDetails)
         };
 
         return <FormGroup row style={{ width: '100%' }}>
@@ -238,8 +227,6 @@ export class AddInterview extends PureComponent {
             interviewer: [interviewer],
             candidates: [tp.candidate]
         };
-        console.log(datetime);
-        console.log(interview);
         postInterview(interview);
     }
 

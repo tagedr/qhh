@@ -26,7 +26,6 @@ export default class LogDropdown extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    console.log(nextProps.logsItems);
     if (
       this.state.logsItems.length !== 0 &&
       (this.state.logsItems.length !== nextProps.logsItems.length ||
@@ -57,7 +56,6 @@ export default class LogDropdown extends React.Component {
         listItems.push(<DropdownItem>{element.BODY}</DropdownItem>);
       });
     }
-    console.log("render " + this.state.logsItems);
     return (
       <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle caret>Dropdown</DropdownToggle>

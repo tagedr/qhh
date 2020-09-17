@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import {
   Button,
   Col,
@@ -10,21 +10,16 @@ import {
 import moment from "moment/moment";
 import { TR } from "../functions/tr";
 
-class TopPanel extends Component {
+class TopPanel extends PureComponent {
   constructor(props) {
     super(props);
 
     this.toggleSplit = this.toggleSplit.bind(this);
+    const pLogin = this.props.credentials.login;
     this.state = {
       splitButtonOpen: false,
-      authDisabled:
-        this.props.credentials.login && this.props.credentials.login.length > 0
-          ? true
-          : false
-    };
-
-    this.state = {
-      login: this.props.credentials.login,
+      authDisabled: pLogin && pLogin.length > 0? true: false,
+      login: pLogin ? pLogin : "",
       password: "",
       queryStr: this.props.query ? this.props.query : ""
     };
@@ -260,7 +255,9 @@ class TopPanel extends Component {
 
   clickLogin() {
     if (this.state.authDisabled) {
-      this.props.logoutUser();
+      this.setState({
+        authDisabled: !this.props.logoutUser()
+      });
     }
     else {
       this.props.loginUser(this.state.login, this.state.pass);

@@ -5,6 +5,9 @@ dotenv.config();
 
 const urlPrefix = process.env.REACT_APP_SERVER_URL_PREFIX;
 
+let lastFindInput = {};
+let selectedTags = [];
+
 const defaultHeaders = {
   credentials: 'include'
 }
@@ -23,14 +26,13 @@ export function loginUser(login, pass) {
       return resp.json();
     })
     .then(json => {
-      console.log(json);
       this.setState({
         credentials: json[0] && json[0].login && json[0].pass ? json[0] : [],
         lastMessageId:
           json[0] && json[0].lastMessageId ? json[0].lastMessageId : 0
       });
       this.setState({
-        logMessages: logRotate(this.state.logMessages, 
+        logMessages: logRotate(this.state.logMessages,
           json[0] && json[0].login && json[0].pass ? TR.SYS_LOGIN_OK : TR.SYS_LOGIN_FAILED)
       });
       this.parseUrlRequest();
@@ -51,21 +53,24 @@ export function logoutUser() {
       method: "GET",
     }))
     .then(response => {
+
       if (response.ok !== true) {
-        return true;
+        return false;
       }
       this.setState({
         credentials: []
       });
-      return response.json();
+      return true;
     })
 }
 
-export function getCandidates(input) {
+export function getCandidates(input = lastFindInput) {
+  console.log(input);
+  lastFindInput = input;
   let query = "";
   if (input.tags && input.tags.length > 0) {
-    this.selectedTags = input.tags;
-    query = urlPrefix + "/tags/" + JSON.stringify(this.selectedTags) + "/candidates";
+    selectedTags = input.tags;
+    query = urlPrefix + "/tags/" + JSON.stringify(selectedTags) + "/candidates";
   } else if (input.candidates && input.candidates.length > 0) {
     query = urlPrefix + "/candidates/" + JSON.stringify(input.candidates[0].id);
   } else return;
@@ -90,7 +95,7 @@ export function getCandidates(input) {
       }
       //else alert("Request for selected tags empty or with errors. Check your connection.")
     })
-    // .catch(alert);
+  // .catch(alert);
 }
 
 export function heartbeatAndFetchMsg() {
@@ -113,14 +118,11 @@ export function heartbeatAndFetchMsg() {
       return response.json();
     })
     .then(json => {
-      console.log(json);
       if (!json) return false;
 
-      if (json.length !== 0) {
-        this.setState({
-          unreadMessages: json
-        });
-      }
+      this.setState({
+        unreadMessages: json
+      });
     })
     .catch(err => {
       this.setState({
@@ -149,7 +151,8 @@ export function getCandidateDetails(id) {
         selectedCandidateInfo: json[0]
       });
 
-      if (json[0].attaches[0] && json[0].attaches[0].fileName)
+      if (json[0].attaches[0] && json[0].attaches[0].fileName) {
+        this.getCandidates();
         fetch(
           (process.env.UPLOAD_URL_PREFIX
             ? process.env.UPLOAD_URL_PREFIX
@@ -173,6 +176,7 @@ export function getCandidateDetails(id) {
             this.setState({
               logMessages: logRotate(this.state.logMessages, logMsg)
             });
+            this.getTags();
             return true;
           })
           .catch(err => {
@@ -184,11 +188,12 @@ export function getCandidateDetails(id) {
               logMessages: logRotate(this.state.logMessages, logMsg)
             });
           });
+      }
     });
 }
 
 export function postAttaches(refreshCallback) {
-  if (this.state.attaches.length === 0 || this.selectedTags.length === 0) {
+  if (this.state.attaches.length === 0 || selectedTags.length === 0) {
     alert("Selected tags must not be empty!");
     return;
   }
@@ -216,7 +221,7 @@ export function postAttaches(refreshCallback) {
 
       let t = [];
       let newAdded = false;
-      this.selectedTags.forEach(tag => {
+      selectedTags.forEach(tag => {
         t = t.concat([{ name: tag, candidates: json }]);
         newAdded = tag === "new" ? true : newAdded;
       });
@@ -262,7 +267,7 @@ export function getMessages(candidateId) {
             )
           });
         }
-          
+
         return [];
       }
       return response.json();

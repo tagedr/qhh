@@ -6,7 +6,7 @@ import { AddInterview } from "../components/modals/Modals";
 import { TR } from "./tr"
 
 
-export function createStatusSelector(tags, candInfo, openDetailsFunc) {
+export function createStatusSelector(tags, candInfo, openCandidateDetails) {
     let ret = [];
     let deactivatedTagIndex = [];
     tags.forEach((tag, i) => {
@@ -40,7 +40,7 @@ export function createStatusSelector(tags, candInfo, openDetailsFunc) {
                         }
                         changedTagList.push(tag);
                         console.log(changedTagList);
-                        updateTags(changedTagList, candInfo, openDetailsFunc);
+                        updateTags(changedTagList, candInfo, openCandidateDetails);
                     }}
                 >
                     {name[0]}{name[1]}{name[2]}

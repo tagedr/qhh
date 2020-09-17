@@ -30,7 +30,6 @@ class CandidateDetails extends Component {
             this.setState({
                 messages: nextProps.messages
             });
-            console.log("should update details!");
             return true;
         }
 
@@ -57,7 +56,6 @@ class CandidateDetails extends Component {
 
 
     render() {
-        console.log("render details");
         let statusSelector, id, cTags, messageControls, candHeader, bottom = '';
         let candidateInfo = this.props.candidateInfo;
 
@@ -72,7 +70,8 @@ class CandidateDetails extends Component {
             statusSelector = this.createStatusSelector(
                 this.props.tagsInfo,
                 candidateInfo,
-                this.props.openCandidateDetails
+                this.props.openCandidateDetails,
+                this.props.getCandidates
             );
 
             messageControls = (
@@ -84,6 +83,7 @@ class CandidateDetails extends Component {
                             onClick={() => {
                                 this.sendMessage();
                                 sleep(1000).then(() => {
+                                    this.props.getTags();
                                     this.props.openCandidateDetails(this.props.candidateInfo.id)
                                 })
                             }}>
@@ -134,8 +134,8 @@ class CandidateDetails extends Component {
         let modalBody = (<ChangeCandidateTags
             toggleModal={this.props.toggleModal}
             candidateInfo={cInfo}
-            postTags={this.props.postTags}
-            openDetailsFunc={this.props.openCandidateDetails}
+            updateTags={this.props.updateTags}
+            openCandidateDetails={this.props.openCandidateDetails}
         />);
 
         this.props.toggleModal(TR.CHANGE_CANDIDATE_TAGS_FOR + " [" + cInfo.id + "] - " + cInfo.name, modalBody);

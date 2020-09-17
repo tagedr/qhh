@@ -8,7 +8,8 @@ class CandidatesList extends Component {
     super(props);
     this.state = {
       foundedCandidates: props.foundedCandidates,
-      activeId: -1
+      activeId: -1,
+      tags: props.tags
     };
     this.candidateElements = [];
   }

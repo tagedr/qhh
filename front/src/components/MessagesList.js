@@ -12,12 +12,10 @@ export default class MessagesList extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        console.log("check MessagesList!");
         if (nextProps.messages !== this.state.messages) {
             this.setState({
                 messages: nextProps.messages
             });
-            console.log("should update MessagesList!");
             return true;
         }
         return false;
