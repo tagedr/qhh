@@ -56,7 +56,7 @@ class CandidateDetails extends Component {
 
 
     render() {
-        let statusSelector, id, cTags, messageControls, candHeader, bottom = '';
+        let statusSelector, id, cTags, messageControls, candHeader;
         let candidateInfo = this.props.candidateInfo;
 
         if (candidateInfo) {
@@ -94,10 +94,9 @@ class CandidateDetails extends Component {
         }
 
         return (
-            <Container style={{overflowY: 'scroll', height: '100%', width: '100%'}}>
                 <Row key={id}>
-                    <Col style={{padding: '10', margin: '10'}}>
-                        <h5 style={{height: "80px"}}>
+                    <Col>
+                        <h5 style={{margin:"6px", height: "80px"}}>
                             {candHeader}
                         </h5>
                         <Button style={{padding: '0'}}
@@ -115,8 +114,6 @@ class CandidateDetails extends Component {
 
                     </Col>
                 </Row>
-                {bottom}
-            </Container>
 
         );
     }

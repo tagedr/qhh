@@ -205,44 +205,37 @@ class App extends PureComponent {
       style={st.modalStyle}
     />)
     return (
+      <Container id="Main-container" fluid>
       <HotKeys
         keyName={"ctrl+enter, up, down, alt+shift+t, alt+t, ctrl+space"}
         onKeyDown={this.onKeyDown.bind(this)}
       >
-        <Container className="containerStyle">
-          <Row>
-            <Col className="dashedStyle">
-              {topPanel}
-            </Col>
-          </Row>
-
-          <Row style={{ minHeight: "880px", height: "100%" }}>
-            <Col md="2" className="dashedStyle" style={{ overflowY: "scroll", height: "100%" }}>
-              <Row className="dashedStyle">
+          <Row> 
+            <Col xs="2" xl="2" style={{  paddingLeft: "2px", padding: "0px"}}>
                 {dropZone}
-              </Row>
-
-              <Row>
                 {candidatesList}
-              </Row>
             </Col>
 
-            <Col md="7" style={{ margin: 0, padding: 0 }}>
-              {attacheViewer}
+            <Col style={{ padding: "0px"}}>
+                {topPanel}
+                <div style={{height:"92vh"}}>
+                {attacheViewer}
+                </div>
+
+                {bottomPanel}
+                {modals}
             </Col>
 
-            <Col md="3" className="dashedStyle" style={{ padding: "0" }}>
+
+            <Col xs="2" xl="3" style={{ padding: "0px"}}>
               {candidateDetails}
             </Col>
-          </Row>
 
-          <Row className="dashedStyle">
-            {bottomPanel}
-          </Row>
 
-          {modals}
-        </Container>
+
+          </Row>
       </HotKeys>
+        </Container>
     );
   }
 

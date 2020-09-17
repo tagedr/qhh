@@ -74,16 +74,9 @@ class BottomPanel extends Component {
     }
     // console.log("rerenderrrrr " + lMessagesMenuItems);
     return (
-      <Container style={{ paddingRight: "0", paddingLeft: "0" }}>
-        <Row style={{ width: "100%", height: "100%" }}>
-          <Col sm={{ size: 5, order: 0, offset: 0 }}>
+        <Row style={{paddingTop: "2px", marginLeft: "0px", width: "100%" }}>
             {/* <LogDropdown logsItems={this.state.logMessages} /> */}
             <Button
-              style={{
-                marginLeft: "10px",
-                marginRight: "10px",
-                padding: "2px"
-              }}
               onClick={() => {
                 sleep(1000).then(() => {
                   this.clickTagList();
@@ -93,12 +86,8 @@ class BottomPanel extends Component {
               {TR.TAGS_AND_COLORS}
             </Button>
 
-            <Button
-              style={{
-                marginLeft: "10px",
-                marginRight: "10px",
-                padding: "2px"
-              }}
+            <Button style={{marginLeft: "4px"}}
+
               onClick={() => {
                 this.props.getInterviews();
                 sleep(1000).then(() => {
@@ -106,8 +95,7 @@ class BottomPanel extends Component {
                     TR.INTERVIEWS,
                     <Interviews data={this.state.interviews} />,
                     {
-                      width: "1800px",
-                      margin: "1.75rem",
+                      width: "100%",
                       maxWidth: "1800px"
                     }
                   );
@@ -116,9 +104,7 @@ class BottomPanel extends Component {
             >
               {TR.INTERVIEWS}
             </Button>
-          </Col>
-          <Col sm={{ size: 4, order: 0, offset: 3 }}>
-            <Dropdown
+            <Dropdown style={{marginLeft: "4px"}}
               direction="left"
               color={logLevel}
               isOpen={this.state.btnDropLogMsgs}
@@ -137,9 +123,7 @@ class BottomPanel extends Component {
                 <DropdownItem>{"lMessagesMenuItems"}</DropdownItem>
               </DropdownMenu>
             </Dropdown>
-          </Col>
         </Row>
-      </Container>
     );
   }
 

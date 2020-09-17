@@ -90,6 +90,15 @@ export class En {
   static ACTIONS = "Actions";
   static READ_EVERYTHING = "I read everything";
   static DELETE = "Delete";
+  static SYS_LOGIN_OK = { BODY: "You're logon", LEVEL: "light" };
+  static SYS_LOGIN_FAILED = { BODY: "Login attempt failed", LEVEL: "danger" };
+  static SYS_POST_ATTACHES_OK = { BODY: "New files uploaded", LEVEL: "success" };
+  static SYS_POST_ATTACHES_FAILED = { BODY: "New files are NOT uploaded", LEVEL: "danger" };
+  static SYS_HEARTBEAT_FAILED = { BODY: "Lost connection with the server", LEVEL: "danger" };
+  static SYS_HEARTBEAT_OK = { BODY: "Server connection restored", LEVEL: "light" };
+  static SYS_POST_MESSAGE_FAILED = { BODY: "Message not sent (reload the page and try again)", LEVEL: "warning" };
+  static SYS_GET_CANDIDATE_DETAILS_FAILED = { BODY: "Error receiving CV №__1__", LEVEL: "danger" };
+  static SYS_GET_CANDIDATE_DETAILS_OK = { BODY: "CV №__1__ downloaded", LEVEL: "light" };
 }
 
-export const TR = Ru;
+export const TR = En;

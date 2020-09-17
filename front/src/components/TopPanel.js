@@ -18,7 +18,7 @@ class TopPanel extends PureComponent {
     const pLogin = this.props.credentials.login;
     this.state = {
       splitButtonOpen: false,
-      authDisabled: pLogin && pLogin.length > 0? true: false,
+      authDisabled: pLogin && pLogin.length > 0 ? true : false,
       login: pLogin ? pLogin : "",
       password: "",
       queryStr: this.props.query ? this.props.query : ""
@@ -73,81 +73,79 @@ class TopPanel extends PureComponent {
         ? "(" + this.props.unreadMessages.length + ")"
         : "";
     return (
-      <Container style={{ paddingRight: "0", paddingLeft: "0" }}>
-        <Row style={{ width: "100%", height: "100%" }}>
-          <Col sm={{ size: 5, order: 0, offset: 0 }}>
-            <InputGroup
-              onChange={e =>
-                this.setState({
-                  queryStr: `${e.target.value}`
-                })
-              }
-            >
-              <Input
-                autoComplete="on"
-                type="search"
-                placeholder={TR.ENTER_TAGS}
-                defaultValue={this.state.queryStr}
-              />
+      <Row>
+        <Col>
+          <InputGroup
+            onChange={e =>
+              this.setState({
+                queryStr: `${e.target.value}`
+              })
+            }
+          >
+            <Input
+              autoComplete="on"
+              type="search"
+              placeholder={TR.ENTER_TAGS}
+              defaultValue={this.state.queryStr}
+            />
 
-              {/* <InputGroupButtonDropdown addonType="prepend" isOpen={this.state.splitButtonOpen}
+            {/* <InputGroupButtonDropdown addonType="prepend" isOpen={this.state.splitButtonOpen}
                                                       toggle={this.toggleSplit}> */}
-              <Button outline color="primary" onClick={() => this.clickFind()}>
-                {TR.FIND_UPDATED}
-              </Button>
-              {/* <DropdownToggle split outline/>
+            <Button outline color="primary" onClick={() => this.clickFind()}>
+              {TR.FIND_UPDATED}
+            </Button>
+            {/* <DropdownToggle split outline/>
                                 <DropdownMenu>
                                     <DropdownItem>{TR.FIND_CREATED}</DropdownItem>
                                   </DropdownMenu> */}
-              {/* </InputGroupButtonDropdown> */}
-              {/* <Input type="date" name="dateFrom" id="dateFrom" placeholder={TR.FROM_DATE}
+            {/* </InputGroupButtonDropdown> */}
+            {/* <Input type="date" name="dateFrom" id="dateFrom" placeholder={TR.FROM_DATE}
                                    onChange={this.dateFromHandler}/>
                                    <Input type="date" name="dateTo" id="dateTo" placeholder={TR.TO_DATE}
                                   onChange={this.dateToHandler}/> */}
-              {/* <Button color="link">3d</Button>
+            {/* <Button color="link">3d</Button>
               <Button color="link">7d</Button> */}
-            </InputGroup>
-          </Col>
-          <Col sm={{ size: 3, order: 0, offset: 0 }}>
-            <InputGroup style={{ marginLeft: 0 }}>
-              <Input
-                disabled={this.state.authDisabled}
-                type="text"
-                placeholder={TR.LOGIN}
-                defaultValue={this.props.credentials.login}
-                onChange={e => {
-                  this.setState({
-                    login: e.target.value
-                  })
-                }}
-              />
-              <Input
-                disabled={this.state.authDisabled}
-                type="password"
-                placeholder={TR.PASSWORD}
-                onChange={e => (this.setState({ pass: `${e.target.value}` }))}
-              />
-              <Button
-                color={this.state.authDisabled ? "link" : "primary"}
-                onClick={() => this.clickLogin()}
-                type="submit"
-                form="form1"
-              >
-                {this.state.authDisabled ? TR.LOGOUT : TR.ENTER}
-              </Button>
-            </InputGroup>
-          </Col>
-          <Col sm={{ size: "auto", offset: 1 }}>
+          </InputGroup>
+        </Col>
+        <Col sm={{ size: 3, order: 0, offset: 0 }}>
+          <InputGroup >
+            <Input
+              disabled={this.state.authDisabled}
+              type="text"
+              placeholder={TR.LOGIN}
+              defaultValue={this.props.credentials.login}
+              onChange={e => {
+                this.setState({
+                  login: e.target.value
+                })
+              }}
+            />
+            <Input
+              disabled={this.state.authDisabled}
+              type="password"
+              placeholder={TR.PASSWORD}
+              onChange={e => (this.setState({ pass: `${e.target.value}` }))}
+            />
             <Button
-              style={{ width: "100%", height: "100%", textAlign: "center" }}
-              color={msgCounter.length > 0 ? "primary" : "link"}
-              onClick={() => this.readMessages()}
+              color={this.state.authDisabled ? "link" : "primary"}
+              onClick={() => this.clickLogin()}
+              type="submit"
+              form="form1"
             >
-              {TR.NOTIFICATIONS + msgCounter}
+              {this.state.authDisabled ? TR.LOGOUT : TR.ENTER}
             </Button>
-          </Col>
-        </Row>
-      </Container>
+          </InputGroup>
+        </Col>
+        <Col sm={{ size: "auto", offset: 1 }}>
+          <Button
+            style={{ width: "100%", height: "100%", textAlign: "center" }}
+            color={msgCounter.length > 0 ? "primary" : "link"}
+            onClick={() => this.readMessages()}
+          >
+            {TR.NOTIFICATIONS + msgCounter}
+          </Button>
+        </Col>
+      </Row>
     );
   }
 

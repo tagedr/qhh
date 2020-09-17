@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ListGroup, ListGroupItem } from "reactstrap";
+import { ListGroup, ListGroupItem, Container } from "reactstrap";
 import "../App.css";
 import { getColorByTagPriority } from "../functions/prerenderUtils";
 
@@ -38,7 +38,7 @@ class CandidatesList extends Component {
             Number(
               this.candidateElements[
                 index + direction >= 0 &&
-                index + direction < this.candidateElements.length
+                  index + direction < this.candidateElements.length
                   ? index + direction
                   : index
               ].key
@@ -75,10 +75,10 @@ class CandidatesList extends Component {
         const candItemText = (
           <div>
             <b style={{ marginBottom: 0, height: "50%" }}>{c.id}</b>
-            <p style={{ marginBottom:0, lineHeight: 1 }}>{c.name}</p>
+            <p style={{ marginBottom: 0, lineHeight: 1 }}>{c.name}</p>
           </div>
         );
- 
+
         const bgColor = {
           backgroundColor: "#" + getColorByTagPriority(c.tags)
         };
@@ -102,9 +102,9 @@ class CandidatesList extends Component {
     }
 
     return (
-      <ListGroup style={{ width: "100%" }}>
-        {this.candidateElements.reverse()}
-      </ListGroup>
+        <ListGroup style={{maxHeight:"90vh", overflowY: 'auto', padding: "2px", width: "100%" }}>
+          {this.candidateElements.reverse()}
+        </ListGroup>
     );
   }
 
