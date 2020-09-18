@@ -1,4 +1,4 @@
-export function logRotate(logs, newEntry, limit = 4) {
+export function logRotate(logs, newEntry, limit = 10) {
     const nEntry = {
       BODY: newEntry.BODY,
       LEVEL: newEntry.LEVEL,

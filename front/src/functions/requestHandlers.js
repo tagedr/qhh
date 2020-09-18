@@ -241,6 +241,11 @@ export function postAttaches(refreshCallback) {
       json.forEach(c => {
         updateTags(t, c);
       });
+      if (refreshCallback) {
+        sleep(2000).then(() => {
+          refreshCallback();
+        });
+      }
       this.setState({
         logMessages: logRotate(this.state.logMessages, TR.SYS_POST_ATTACHES_OK)
       });

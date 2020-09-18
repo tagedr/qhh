@@ -6,6 +6,7 @@ import User from "../models/User";
 import Message from "../models/Message";
 import moment from "moment/moment";
 import cors from 'cors';
+import md5File from 'md5-file';
 
 import loginLdap from "../ldap/client";
 
@@ -88,34 +89,52 @@ export default router => {
         if (!req.files || req.files.length === 0)
             res.sendStatus(505);
 
-        let graph = [];
+        let graph = [], insertedGraph;
         req.files.forEach((f) => {
             let a = f.originalname.split('.');
             const ext = a.length > 0 ? a[a.length - 1] : "pdf";
-            fs.rename(f.path, f.path + "." + ext, (err) => {
-                if (err) throw err;
-            });
-            // console.log(f);
-            graph = graph.concat([{
+
+            fs.renameSync(f.path, f.path + "." + ext);
+
+            graph = graph.concat({
                 name: f.originalname.toLowerCase().replace(/pdf|svg|png|jpg|jpeg/g, '').replace(/[\!\@\#\$\%\^\&\*\(\)\+\"\№\;\%\:\?\*\-\+\/\\\{\}\d\,\.\|]/g, ''),
                 attaches: [{
                     name: f.originalname,
-                    filename: f.filename + "." + ext
+                    filename: f.filename + "." + ext,
+                    md5:  md5File.sync(f.path + "." + ext)
                 }]
-            }]);
-        });
-
-        const insertedGraph = await
-            transaction(Candidate.knex(), trx => {
-                return Candidate.query(trx).insertGraph(graph);
             });
 
-        insertedGraph.forEach((cand) => {
-            addSystemMessage("Candidate added '"+cand.name+"'", 1, cred.id, cand.id).then();
         });
+
+        insertedGraph = await Candidate.query().insertGraph(graph);
+        await insertedGraph.forEach((cand) => {
+            addSystemMessage("Candidate added '" + cand.name + "'", 1, cred.id, cand.id).then();
+        })
 
         res.send(insertedGraph);
     });
+
+
+    function getHash(path, cb) {
+        var fs = require('fs');
+        var crypto = require('crypto');
+
+        var fd = fs.createReadStream(path);
+        var hash = crypto.createHash('sha1');
+        hash.setEncoding('hex');
+
+        fd.on('end', function () {
+            hash.end();
+            // *** Here is my problem ***
+            console.log(hash.read());
+            if (cb) {
+                cb(null, hash.read());
+            }
+        });
+
+        fd.pipe(hash);
+    };
 
     // ---------------------------------------------------------------------------------------------
     /* Input:
@@ -164,10 +183,10 @@ export default router => {
         if (tags && tags.length > 0) {
             console.error("New tags found! Size: " + tags.length)
             let t = await Tag.query().upsertGraph(tags, {
-                relate: false,
-                insertMissing: true,
+                relate: true,
+                insertMissing: false,
                 noInsert: false,
-                update: true
+                update: false
             });
         }
 
@@ -198,7 +217,7 @@ export default router => {
 
         // Insert new relations between current candidate and tags
         let ret = await Candidate.query()
-            .upsertGraph(candidateInfo, { relate: true, unrelate:true, noUpdate: false, insert: false, noInsert: true });
+            .upsertGraph(candidateInfo, { relate: true, unrelate: true, noUpdate: false, insert: false, noInsert: true });
 
         // Create new system message
         const body = candidateInfo.tags.map((m) => {
@@ -206,11 +225,11 @@ export default router => {
         }).join(", ")
         addSystemMessage("Tags changed to [ " + body + " ]", 2, req.session.credentials.id, candidateInfo.id).then();
 
-        let cleanRet = await Tag.query().withGraphFetched('candidates').where('color','=','0').whereNull('priority');
+        let cleanRet = await Tag.query().withGraphFetched('candidates').where('color', '=', '0').whereNull('priority');
 
         // Clean from unused empty tags
         cleanRet.forEach(async (t) => {
-            if(t.candidates.length === 0){
+            if (t.candidates.length === 0) {
                 await Tag.query().deleteById(t.id);
             }
         });
@@ -224,7 +243,7 @@ export default router => {
         if (!candidateInfo || !candidateInfo.name) {
             throw createStatusCodeError(505);
         }
-             
+
         // Insert new relations between current candidate and tags
         let ret = await Candidate.query()
             .upsertGraph(candidateInfo, { relate: true, noUpdate: false, noInsert: true });
@@ -285,7 +304,7 @@ export default router => {
             interviewer: { id: interview.interviewer[0].id },
             candidates: { id: interview.candidates[0].id }
         };
-        let ret={};
+        let ret = {};
         try {
             await transaction(Interview, async (Interview, trx) => {
                 await trx.raw("SET FOREIGN_KEY_CHECKS=0;");

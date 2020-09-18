@@ -155,7 +155,7 @@ class App extends PureComponent {
         color={attLngth > 0 ? "secondary" : "link"}
         disabled={attLngth === 0}
         onClick={() => {
-          this.clickSendNewCandidates(this.onKeyDown.bind(this));
+          this.clickSendNewCandidates(this.getCandidates);
         }}
       >
         {attLngth === 0

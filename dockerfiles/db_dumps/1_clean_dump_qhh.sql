@@ -30,6 +30,7 @@ CREATE TABLE `attaches` (
   `name` varchar(1023) DEFAULT 'someattache',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fileName` varchar(1024) DEFAULT NULL,
+  `md5` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=431 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

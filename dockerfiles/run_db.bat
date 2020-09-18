@@ -1,0 +1,1 @@
+docker-compose -f mysql.yml -p qhh up
