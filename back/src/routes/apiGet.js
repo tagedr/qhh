@@ -63,6 +63,31 @@ export default router => {
   });
 
   // ---------------------------------------------------------------------------------------------
+  router.get("/candidates/:id/duplicates", async (req, res) => {
+
+    const candidate = await Candidate.query()
+      .distinct()
+      .skipUndefined()
+      .where('id', '=', req.params.id)
+      .orderBy("id", "asc");
+
+    if (!candidate || candidate.length === 0) {
+      res.send([]);
+      return;
+    }
+
+    let names = [];
+    const dups = await Candidate.query()
+      .whereNot({id: req.params.id})
+      .where({ name: candidate[0].name });
+    if (dups.length > 0) {
+      console.warn("duplicates: " + dups.name);
+    }
+
+    res.send(dups);
+  });
+
+  // ---------------------------------------------------------------------------------------------
   router.get("/tags/:tags/candidates", async (req, res) => {
 
     const tags = JSON.parse(req.params.tags);

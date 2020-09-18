@@ -16,6 +16,7 @@ import HotKeys from "react-hot-keys";
 import { TR } from "./functions/tr";
 import {
   getCandidates,
+  getDuplicates,
   getCandidateDetails,
   postAttaches,
   getMessages,
@@ -50,7 +51,8 @@ class App extends PureComponent {
       logMessages: [],
       users: [],
       query: "",
-      lastMessageId: 0
+      lastMessageId: 0,
+      duplicates: []
     };
 
     this.toggleModal = (title, body, style) => {
@@ -74,6 +76,7 @@ class App extends PureComponent {
     this.loginUser = loginUser.bind(this);
     this.loginUser();
     this.getCandidates = getCandidates.bind(this);
+    this.getDuplicates = getDuplicates.bind(this);
     this.openCandidateDetails = getCandidateDetails.bind(this);
     this.clickSendNewCandidates = postAttaches.bind(this);
     this.getMessages = getMessages.bind(this);
@@ -185,9 +188,11 @@ class App extends PureComponent {
       shortcutInfo={st.shortcutInfo}
       openCandidateDetails={this.openCandidateDetails}
       getCandidates={this.getCandidates}
+      getDuplicates={this.getDuplicates}
       credentials={st.credentials}
       tagsInfo={st.tags ? st.tags : []}
-      users={this.state.users}
+      users={st.users}
+      duplicates={st.duplicates}
     />)
 
     const bottomPanel = (<BottomPanel

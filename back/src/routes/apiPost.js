@@ -105,18 +105,6 @@ export default router => {
             }]);
         });
 
-        // check duplicates
-        // let names = [];
-        // graph.forEach(async (gCandidate) => {
-        //     const can = await Candidate.query()
-        //         .where({ name: gCandidate.name })
-        //         .then();
-        //     if (can.length > 0) {
-        //         console.warn("duplicates: " + can.name);
-        //     }
-        // });
-        // ------
-
         const insertedGraph = await
             transaction(Candidate.knex(), trx => {
                 return Candidate.query(trx).insertGraph(graph);

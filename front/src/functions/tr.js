@@ -58,6 +58,7 @@ export class Ru {
   static SYS_GET_RESPONSE_IS_SHOWN = { BODY: "Результат запроса отображён", LEVEL: "light" };
   static SYS_LOGOUT_OK = { BODY: "Вы вышли из системы", LEVEL: "warning" };
   static DELETE = "Удалить";
+  static POSSIBLE_DUPLICATES = "Возможные дубликаты:"
 }
 
 export class En {
@@ -116,6 +117,7 @@ export class En {
   static CHANGE_CANDIDATE_NAME_FOR = "Change candidate's name";
   static MUST_SELECT_CANDIDATE_FOR_DETAILS = "The history of the selected candidate is displayed here";
   static MUST_SELECT_CANDIDATE_FOR_VC = "The CV of the selected candidate is displayed here";
+  static POSSIBLE_DUPLICATES = "Possible duplicates:"
 }
 
 export const TR = Ru;

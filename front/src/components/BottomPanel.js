@@ -36,7 +36,6 @@ class BottomPanel extends PureComponent {
       this.clickTagList();
       return true;
     }
-    // console.error("FIRE!");
     if (this.state.interviews.length !== nextProps.interviews.length) {
       this.setState({
         interviews: nextProps.interviews
@@ -73,7 +72,6 @@ class BottomPanel extends PureComponent {
           </DropdownItem></div>);
       });
     }
-    console.log(lMessagesMenuItems);
     return (
         <Row style={{paddingTop: "2px", marginLeft: "0px", width: "100%" }}>
           <Col xs="2" md="2" xl="1"  style={{paddingLeft:"0px", paddingRight:"2px"}}>

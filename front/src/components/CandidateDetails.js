@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Button, Col, Container, Input, Row } from 'reactstrap';
 import MessagesList from './MessagesList'
 
 import { createStatusSelector } from "../functions/prerenderUtils"
 import { ChangeCandidateTags, ChangeCandidateName } from "./modals/Modals"
+import { getDuplicates } from "../functions/requestHandlers"
 
 import { TR } from "../functions/tr";
 
-class CandidateDetails extends Component {
+class CandidateDetails extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -16,48 +17,47 @@ class CandidateDetails extends Component {
             message: '',
             messages: this.props.messages ? this.props.messages : [],
             isModalOpen: false,
-            newTags: null
+            newTags: null,
         };
         this.newMessage = '';
         this.createStatusSelector = createStatusSelector.bind(this);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        // console.log("check details!");
-        // console.log(this.state.messages.length);
-        // console.log(nextProps.messages);
-        if (nextProps.messages && ((nextProps.messages !== this.state.messages) || nextProps.messages.length !== this.state.messages.length)) {
-            this.setState({
-                messages: nextProps.messages
-            });
-            return true;
-        }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     if (nextProps.messages && ((nextProps.messages !== this.state.messages) || nextProps.messages.length !== this.state.messages.length)) {
+    //         this.setState({
+    //             messages: nextProps.messages
+    //         });
+    //         return true;
+    //     }
 
-        if (nextState.isModalOpen !== this.state.isModalOpen) {
-            return true;
-        }
+    //     if (nextState.isModalOpen !== this.state.isModalOpen) {
+    //         return true;
+    //     }
 
-        if (this.props.candidateInfo &&
-            nextProps.shortcutInfo &&
-            this.props.shortcutInfo &&
-            nextProps.shortcutInfo.counter !== this.props.shortcutInfo.counter &&
-            nextProps.shortcutInfo.keyPressed === 'alt+shift+g') {
+    //     if (this.props.candidateInfo &&
+    //         nextProps.shortcutInfo &&
+    //         this.props.shortcutInfo &&
+    //         nextProps.shortcutInfo.counter !== this.props.shortcutInfo.counter &&
+    //         nextProps.shortcutInfo.keyPressed === 'alt+shift+g') {
 
-            this.changeTagWindow();
-            return true;
-        }
+    //         this.changeTagWindow();
+    //         return true;
+    //     }
 
-        if ((this.props.candidateInfo === null && nextProps.candidateInfo) || this.props.candidateInfo !== nextProps.candidateInfo) {
-            return true;
-        }
+    //     if ((this.props.candidateInfo === null && nextProps.candidateInfo) || this.props.candidateInfo !== nextProps.candidateInfo) {
+    //         return true;
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
 
     render() {
-        let statusSelector, id, cTags = [], messageControls, candHeader;
+        let statusSelector, id, cTags = [], messageControls, candHeader, dupElements = [], buttonChangeName, buttonChangeTag;
         let candidateInfo = this.props.candidateInfo;
+        let duplicates = this.props.duplicates ? this.props.duplicates : [];
+        console.log(duplicates);
 
         if (candidateInfo) {
 
@@ -93,36 +93,49 @@ class CandidateDetails extends Component {
                     </Button>
                 </div>
             );
+
+            if (duplicates.length > 0) {
+                duplicates.forEach((dup, i) => {
+                    dupElements.push(<a href={process.env.REACT_APP_CLIENT_URL_PREFIX + ":" + process.env.REACT_APP_PORT + "/candidate?id=" + dup.id}>{dup.id}</a>)
+                })
+            }
+
+            buttonChangeName = (<Button color="light" style={{ padding: "0px" }}><img style={{ width: "24px", height: "24px" }} src={"account_box-24px.svg"}
+                onClick={
+                    () => this.changeNameWindow()
+                }
+            /></Button>);
+
+            buttonChangeTag = (<Button color="light" style={{ padding: "0px" }}><img style={{ width: "24px", height: "24px" }} src={"label-24px.svg"}
+                onClick={
+                    () => this.changeTagWindow()
+                }
+            /></Button>);
         }
 
         return (
             <Col style={{ margin: "0px", padding: "2px", height: "100%", maxHeight: "100%" }}>
-                { !this.props.candidateInfo
+                {!this.props.candidateInfo
                     ? <div style={{ color: "#BBBBBB", display: "flex", height: "90%", width: "100%", textAlign: "center", alignItems: "center", justifyContent: "center" }}>
                         <br /><br />{TR.MUST_SELECT_CANDIDATE_FOR_DETAILS}
                     </div>
                     : ""}
+
                 {this.props.candidateInfo ? (<div style={{ paddingTop: "6px" }}>
 
-                    <Button color="light" style={{ padding: "0px" }}><img style={{ width: "24px", height: "24px" }} src={"account_box-24px.svg"}
-                        onClick={
-                            () => this.changeNameWindow()
-                        }
-                    /></Button>
+                    {buttonChangeName}
 
-                    <Button color="light" style={{ padding: "0px" }}><img style={{ width: "24px", height: "24px" }} src={"label-24px.svg"}
-                        onClick={
-                            () => this.changeTagWindow()
-                        }
-                    /></Button>
+                    {buttonChangeTag}
                     {cTags.map((tag) => <b> {tag} </b>)}
-                </div>) : ""}
-                <h5 style={{ wordWrap: "break-word", paddingTop: "6px" }}>
-                    {candHeader}
-                </h5>
-                {statusSelector}
+                    <h5 style={{ wordWrap: "break-word", paddingTop: "6px" }}>
+                        {candHeader}
+                    </h5>
+                    {duplicates.length > 0 ? TR.POSSIBLE_DUPLICATES : ""}
+                    {duplicates.length > 0 ? dupElements.map((dup) => <b> {dup} </b>) : ""}
+                    {statusSelector}
 
-                {messageControls}
+                    {messageControls}
+                </div>) : ""}
                 <MessagesList messages={this.props.messages} />
 
             </Col>

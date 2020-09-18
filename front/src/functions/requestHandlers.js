@@ -188,6 +188,7 @@ export function getCandidateDetails(id) {
               logMessages: logRotate(this.state.logMessages, logMsg)
             });
             this.getTags();
+            this.getDuplicates(id);
             return true;
           })
           .catch(err => {
@@ -307,6 +308,27 @@ export function getTags() {
 
       this.setState({
         tags: json
+      });
+      return json;
+    });
+}
+
+export function getDuplicates(candidateId) {
+  return fetch(urlPrefix + "/candidates/"+candidateId+"/duplicates", Object.assign({}, defaultHeaders,
+    {
+      method: "GET",
+      cache: "default"
+    }))
+    .then(response => {
+      if (response.ok !== true) return [];
+
+      return response.json();
+    })
+    .then(json => {
+      if (!json) return [];
+      console.log(json);
+      this.setState({
+        duplicates: json
       });
       return json;
     });
