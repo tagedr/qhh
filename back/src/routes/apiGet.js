@@ -4,6 +4,8 @@ import Candidate from "../models/Candidate";
 import Tag from "../models/Tag";
 import User from "../models/User";
 import Message from "../models/Message";
+import Attaches from "../models/Attache";
+import { has } from "lodash";
 
 export default router => {
   router.get("/", async (req, res) => {
@@ -66,6 +68,9 @@ export default router => {
   router.get("/candidates/:id/duplicates", async (req, res) => {
 
     const candidate = await Candidate.query()
+      .eager({
+        attaches: true
+      })
       .distinct()
       .skipUndefined()
       .where('id', '=', req.params.id)
@@ -77,14 +82,38 @@ export default router => {
     }
 
     let names = [];
-    const dups = await Candidate.query()
-      .whereNot({id: req.params.id})
-      .where({ name: candidate[0].name });
-    if (dups.length > 0) {
-      console.warn("duplicates: " + dups.name);
+    const dupsByName = await Candidate.query()
+      .whereNot({ id: req.params.id })
+      .where({ name: candidate[0].name })
+
+    let hashes = [], candidateAttIds = [], dupAttIds = [];
+    candidate[0].attaches.forEach(att => {
+      if (att.md5 && att.md5.length > 0)
+        hashes = hashes.concat(att.md5);
+      candidateAttIds = candidateAttIds.concat(att.id);
+    })
+
+    const dupsByHash1 = await Attaches.query()
+      .where('md5', 'in', hashes);
+
+    dupsByHash1.forEach(att => {
+      if (!candidateAttIds.includes(att.id))
+        dupAttIds = dupAttIds.concat(att.id);
+    })
+    const dupsByHash = await Attaches.relatedQuery('candidates')
+      .for(dupAttIds)
+
+    if (dupsByName.length > 0) {
+      console.warn("duplicates by Name : " + dupsByName);
     }
 
-    res.send(dups);
+    if (dupsByHash.length > 0) {
+      console.warn("duplicates by md5 : " + dupsByHash);
+    }
+
+
+
+    res.send([].concat(dupsByName, dupsByHash));
   });
 
   // ---------------------------------------------------------------------------------------------
