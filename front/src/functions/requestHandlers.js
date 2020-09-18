@@ -60,12 +60,14 @@ export function logoutUser() {
       this.setState({
         credentials: []
       });
+      this.setState({
+        logMessages: logRotate(this.state.logMessages, TR.SYS_LOGOUT_OK)
+      });
       return true;
     })
 }
 
 export function getCandidates(input = lastFindInput) {
-  console.log(input);
   lastFindInput = input;
   let query = "";
   if (input.tags && input.tags.length > 0) {
@@ -88,9 +90,18 @@ export function getCandidates(input = lastFindInput) {
       return response.json();
     })
     .then(json => {
-      if (json && json.length > 0) {
+      if (json) {
         this.setState({
           foundedCandidates: json
+        });
+      }
+      if(json.length === 0) {
+        this.setState({
+          logMessages: logRotate(this.state.logMessages, TR.SYS_GET_RESPONSE_IS_EMPTY)
+        });
+      } else {
+        this.setState({
+          logMessages: logRotate(this.state.logMessages, TR.SYS_GET_RESPONSE_IS_SHOWN)
         });
       }
       //else alert("Request for selected tags empty or with errors. Check your connection.")
@@ -251,7 +262,6 @@ export function postAttaches(refreshCallback) {
 
 export function getMessages(candidateId) {
   if (!candidateId || candidateId.length === 0) return;
-  console.warn("going for messages");
   return fetch(urlPrefix + "/messages/" + candidateId, Object.assign({}, defaultHeaders,
     {
       method: "GET",
@@ -274,7 +284,6 @@ export function getMessages(candidateId) {
     })
     .then(json => {
       if (!json) return false;
-      console.warn("got messages");
       this.setState({
         candidateMessages: json
       });

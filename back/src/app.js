@@ -13,6 +13,7 @@ import cors from 'cors';
 import { Model } from 'objection';
 import https from 'https';
 import session from 'express-session';
+import { env } from 'process';
 
 dotenv.config();
 
@@ -81,13 +82,15 @@ app.use((err, req, res, next) => {
     }
 });
 
-const server = https.createServer({
-    key: fs.readFileSync(process.env.CERT_KEY_FILE),
-    cert: fs.readFileSync(process.env.CERT_FILE)
-}, app).listen(SERVER_PORT, () => {
-    console.log('qhh-back listening at port %s', server.address().port);
-});
-
-// const server = app.listen(SERVER_PORT, () => {
-//     console.log('qhh-back listening at port %s', server.address().port);
-// });
+if(eval(process.env.USE_HTTPS)){
+    const server = https.createServer({
+        key: fs.readFileSync(process.env.CERT_KEY_FILE),
+        cert: fs.readFileSync(process.env.CERT_FILE)
+    }, app).listen(SERVER_PORT, () => {
+        console.log('qhh-back listening at port %s', server.address().port);
+    });
+} else {
+    const server = app.listen(SERVER_PORT, () => {
+        console.log('qhh-back listening at port %s', server.address().port);
+    });
+}

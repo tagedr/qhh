@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import {
   Dropdown,
   DropdownItem,
@@ -15,7 +15,7 @@ import { Interviews } from "./modals/Modals";
 import { TR } from "../functions/tr";
 import moment from "moment/moment";
 
-class BottomPanel extends Component {
+class BottomPanel extends PureComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -26,7 +26,7 @@ class BottomPanel extends Component {
     };
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     if (
       nextProps.shortcutInfo &&
       this.props.shortcutInfo &&
@@ -49,9 +49,9 @@ class BottomPanel extends Component {
       });
       return true;
     }
-    if (this.state.btnDropLogMsgs !== nextProps.btnDropLogMsgs) {
+    if (this.state.btnDropLogMsgs !== nextState.btnDropLogMsgs) {
       this.setState({
-        btnDropLogMsgs: nextProps.btnDropLogMsgs
+        btnDropLogMsgs: nextState.btnDropLogMsgs
       });
       return true;
     }
@@ -63,20 +63,21 @@ class BottomPanel extends Component {
     const LogMsgsIsNotEmpty = lMessages && lMessages.length > 0;
     let logLevel = "light";
     let lMessagesMenuItems = [];
+    let lastMsg = lMessages[lMessages.length - 1];
     if (LogMsgsIsNotEmpty) {
-      logLevel = lMessages[lMessages.length - 1].LEVEL;
+      logLevel = lastMsg.LEVEL;
 
       lMessages.forEach((m, i) => {
-        lMessagesMenuItems.push(<div><DropdownItem key={i}>asdasd
+        lMessagesMenuItems.push(<div><DropdownItem color={m.LEVEL} key={i}>
             {moment(m.date).format("HH:mm:ss ") + m.BODY}
           </DropdownItem></div>);
       });
     }
-    // console.log("rerenderrrrr " + lMessagesMenuItems);
+    console.log(lMessagesMenuItems);
     return (
         <Row style={{paddingTop: "2px", marginLeft: "0px", width: "100%" }}>
-            {/* <LogDropdown logsItems={this.state.logMessages} /> */}
-            <Button
+          <Col xs="2" md="2" xl="1"  style={{paddingLeft:"0px", paddingRight:"2px"}}>
+            <Button color="outline-primary"
               onClick={() => {
                 sleep(1000).then(() => {
                   this.clickTagList();
@@ -85,8 +86,9 @@ class BottomPanel extends Component {
             >
               {TR.TAGS_AND_COLORS}
             </Button>
-
-            <Button style={{marginLeft: "4px"}}
+            </Col>
+            <Col xs="4" md="4" xl="3" style={{paddingLeft: "2px", paddingRight: "2px"}}>
+            <Button  color="outline-primary"
 
               onClick={() => {
                 this.props.getInterviews();
@@ -104,25 +106,27 @@ class BottomPanel extends Component {
             >
               {TR.INTERVIEWS}
             </Button>
-            <Dropdown style={{marginLeft: "4px"}}
-              direction="left"
+            </Col>
+            <Col xs="6" md="6" xl="8" style={{paddingRight:"0px"}}>
+            <Dropdown style={{float:"right"}}
+              direction="up"
               color={logLevel}
               isOpen={this.state.btnDropLogMsgs}
               toggle={() => {
                 this.setState({ btnDropLogMsgs: !this.state.btnDropLogMsgs });
               }}
             >
-              <DropdownToggle caret>
+              <DropdownToggle caret color={logLevel}>
                 {LogMsgsIsNotEmpty
-                  ? moment(lMessages[lMessages.length - 1].date).format(
-                      "HH:mm:ss "
-                    ) + lMessages[lMessages.length - 1].BODY
+                  ? ( lastMsg.BODY.length > 15 ? lastMsg.BODY.substring(0, 15) + "..." : lastMsg.BODY )
                   : TR.LOGS_IS_EMPTY}
               </DropdownToggle>
+              
               <DropdownMenu>
-                <DropdownItem>{"lMessagesMenuItems"}</DropdownItem>
+                {lMessagesMenuItems}
               </DropdownMenu>
             </Dropdown>
+            </Col>
         </Row>
     );
   }

@@ -4,6 +4,7 @@ import moment from "moment/moment";
 import { updateTags } from './requestHandlers'
 import { AddInterview } from "../components/modals/Modals";
 import { TR } from "./tr"
+import {Col } from "reactstrap";
 
 
 export function createStatusSelector(tags, candInfo, openCandidateDetails) {
@@ -47,7 +48,7 @@ export function createStatusSelector(tags, candInfo, openCandidateDetails) {
                 </Button>)
         }
     });
-    return <ButtonGroup>{ret}</ButtonGroup>
+    return <Col style={{paddingLeft: "0px"}}>{ret}</Col>
 }
 
 function addInterviewModal() {

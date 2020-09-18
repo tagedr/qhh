@@ -94,8 +94,7 @@ class CandidateDetails extends Component {
         }
 
         return (
-                <Row key={id}>
-                    <Col style={{margin:"8px", width: "200px"}}>
+                    <Col style={{margin:"0px",padding:"2px",height:"100%",maxHeight:"100%"}}>
                         <h5 >
                             [<img style={{width:"18px", height:"18px"}} src={"edit-black-18dp.svg"}/>]
                             {candHeader}
@@ -114,7 +113,6 @@ class CandidateDetails extends Component {
                         <MessagesList messages={this.props.messages}/>
 
                     </Col>
-                </Row>
 
         );
     }

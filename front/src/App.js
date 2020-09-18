@@ -210,24 +210,24 @@ class App extends PureComponent {
         keyName={"ctrl+enter, up, down, alt+shift+t, alt+t, ctrl+space"}
         onKeyDown={this.onKeyDown.bind(this)}
       >
-          <Row> 
-            <Col xs="2" xl="2" style={{  paddingLeft: "2px", padding: "0px"}}>
+          <Row style={{height:"100%"}}> 
+            <Col xs="2" xl="2" style={{ height:"100%", paddingLeft: "2px", padding: "0px"}}>
                 {dropZone}
                 {candidatesList}
             </Col>
 
-            <Col style={{ padding: "0px"}}>
+            <Col style={{height:"100%", padding: "0px"}}>
                 {topPanel}
-                <div style={{height:"92vh"}}>
+                <div style={{height:"84%", minHeight:"84%", maxHeight:"88%"}}>
                 {attacheViewer}
-                </div>
 
+                </div>
                 {bottomPanel}
                 {modals}
             </Col>
 
 
-            <Col xs="2" xl="2" style={{ padding: "0px"}}>
+            <Col xs="3" xl="3" style={{height:"100%", padding: "0px"}}>
               {candidateDetails}
             </Col>
 

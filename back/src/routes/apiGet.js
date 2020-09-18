@@ -74,8 +74,8 @@ export default router => {
       .distinct()
       .orderBy("id", "desc");
 
-    if (tags.length !== tagsInDB.length) {
-      res.sendStatus(200);
+    if (tagsInDB.length.length === 0) {
+      res.send([]);
       return;
     }
 

@@ -43,11 +43,11 @@
 }
 
 body {
-    /* height: 100% !important; */
+    height: 100%;
 }
 
 html {
-    /* height: 92vh !important; */
+    height: 100%;
 }
 
 *{

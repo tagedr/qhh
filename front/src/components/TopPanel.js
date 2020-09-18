@@ -27,6 +27,8 @@ class TopPanel extends PureComponent {
     this.lasMessageId = 0;
   }
 
+
+
   componentDidUpdate(prevProps) {
     if (
       prevProps.unreadMessages &&
@@ -68,19 +70,30 @@ class TopPanel extends PureComponent {
   }
 
   render() {
-    const msgCounter =
-      this.props.unreadMessages && this.props.unreadMessages.length > 0
-        ? "(" + this.props.unreadMessages.length + ")"
-        : "";
+    let unreadMessageButton;  
+    if (this.props.unreadMessages && this.props.unreadMessages.length > 0 ) {
+        unreadMessageButton = (<Button style={{float: "right", height:"100%"}}
+        color={"warning"}
+        onClick={() => this.readMessages()}
+      >
+         <img style={{width:"24px", height:"24px"}} src={"mail-24px.svg"}/>
+         {this.props.unreadMessages.length}
+      </Button>)
+    }
     return (
       <Row>
-        <Col xs="4" xl="4">
-          <InputGroup onChange={e => this.setState({ queryStr: `${e.target.value}` })}>
+        <Col xs="4" xl="4" style={{paddingRight:"2px"}}>
+          <InputGroup onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              this.clickFind();
+            }
+          }
+          } onChange={e => this.setState({ queryStr: `${e.target.value}` })}>
             <Input
               autoComplete="on"
               type="search"
               placeholder={TR.ENTER_TAGS}
-              defaultValue={this.state.queryStr}
+              defaultValue={decodeURIComponent(this.state.queryStr)}
             />
             <Button outline color="primary" onClick={() => this.clickFind()}>
               {TR.FIND_UPDATED}
@@ -88,8 +101,13 @@ class TopPanel extends PureComponent {
 
           </InputGroup>
         </Col>
-        <Col xs="4" md="4" xl="5">
-          <InputGroup >
+        <Col xs="5" md="5" xl="5" style={{paddingLeft:"2px",paddingRight:"2px"}}>
+          <InputGroup onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              this.clickLogin();
+            }
+          }
+          } >
             <Input
               disabled={this.state.authDisabled}
               type="text"
@@ -117,14 +135,8 @@ class TopPanel extends PureComponent {
             </Button>
           </InputGroup>
         </Col>
-        <Col style={{paddingLeft: "4px", paddingRight:"4px"}}>
-          <Button
-            
-            color={msgCounter.length > 0 ? "primary" : "link"}
-            onClick={() => this.readMessages()}
-          >
-            {TR.NOTIFICATIONS + msgCounter}
-          </Button>
+        <Col xs="3" md="3" xl="3" style={{paddingLeft:"2px"}}>
+          {unreadMessageButton?unreadMessageButton:""}
         </Col>
       </Row>
     );
@@ -159,7 +171,7 @@ class TopPanel extends PureComponent {
 
       const candIdUrl = (
         <a href={urlCandidateIdPrefix + msg.candidates[0].id}>
-          {msg.candidates[0].id}
+          {msg.candidates[0].id} {msg.candidates[0].name}
         </a>
       );
 
@@ -203,7 +215,7 @@ class TopPanel extends PureComponent {
     });
 
     const body = (
-      <div style={{wordWrap: "break-word"}}>
+      <div style={{ wordWrap: "break-word" }}>
         {TR.USER_MESSAGES}:<br />
         {userMessages}
         <br />
@@ -217,7 +229,7 @@ class TopPanel extends PureComponent {
         {tagsChanges}
         <br />
         <Button
-          style={{ width: "100%" }}
+          style={{  width: "100%" }}
           color="primary"
           onClick={() => {
             this.props.readAllMessages(this.lasMessageId);

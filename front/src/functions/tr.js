@@ -1,6 +1,6 @@
 export class Ru {
   static INTERVIEWS = "Собеседования";
-  static TAGS_AND_COLORS = "Список тегов";
+  static TAGS_AND_COLORS = "Теги";
   static ENTER_MESSAGE_HERE = "Введите сообщение";
   static CHANGE_CANDIDATE_TAGS_FOR = "Изменение тегов для кандидата";
   static NO_MESSAGES = "Сообщений нет";
@@ -27,7 +27,8 @@ export class Ru {
     'Вход. Введите логин и пароль, после чего нажмите кнопку "' +
     Ru.ENTER +
     '".';
-  static NOTIFICATIONS = "Оповещения";
+  static NOTIFICATIONS = "";
+  static NEW = "Новых";
   static DROP_NEW_CANDIDATES_HERE = "Перетащите сюда новых кандидатов!";
   static NOTHING_TO_UPLOAD = "Нечего загружать";
   static UPLOAD = "Загрузить ";
@@ -46,9 +47,12 @@ export class Ru {
   static SYS_POST_ATTACHES_FAILED = { BODY: "Новые файлы НЕ загружены", LEVEL: "danger" };
   static SYS_HEARTBEAT_FAILED = { BODY: "Пропала связь с сервером", LEVEL: "danger" };
   static SYS_HEARTBEAT_OK = { BODY: "Связь с сервером восстановлена", LEVEL: "light" };
-  static SYS_POST_MESSAGE_FAILED = { BODY: "Сообщение не отправлено (перезагрузите страницу и попробуйте снова)", LEVEL: "warning" };
+  static SYS_POST_MESSAGE_FAILED = { BODY: "Сообщение не отправлено", LEVEL: "warning" };
   static SYS_GET_CANDIDATE_DETAILS_FAILED = { BODY: "Ошибка получения резюме №__1__", LEVEL: "danger" };
   static SYS_GET_CANDIDATE_DETAILS_OK = { BODY: "Резюме №__1__ скачано", LEVEL: "light" };
+  static SYS_GET_RESPONSE_IS_EMPTY = { BODY: "По запросу ничего не найдено", LEVEL: "warning" };
+  static SYS_GET_RESPONSE_IS_SHOWN = { BODY: "Результат запроса отображён", LEVEL: "light" };
+  static SYS_LOGOUT_OK = { BODY: "Вы вышли из системы", LEVEL: "warning" };
   static DELETE = "Удалить";
 }
 
@@ -80,6 +84,7 @@ export class En {
   static ENTER_LOGIN_AND_PASS =
     'Login. Enter login and password, then press "' + En.ENTER + '" button.';
   static NOTIFICATIONS = "Messages";
+  static NEW = "New";
   static DROP_NEW_CANDIDATES_HERE = "Drop new candidates here!";
   static NOTHING_TO_UPLOAD = "Nothing to upload";
   static UPLOAD = "Upload ";
@@ -98,10 +103,10 @@ export class En {
   static SYS_POST_ATTACHES_FAILED = { BODY: "New files are NOT uploaded", LEVEL: "danger" };
   static SYS_HEARTBEAT_FAILED = { BODY: "Lost connection with the server", LEVEL: "danger" };
   static SYS_HEARTBEAT_OK = { BODY: "Server connection restored", LEVEL: "light" };
-  static SYS_POST_MESSAGE_FAILED = { BODY: "Message not sent (reload the page and try again)", LEVEL: "warning" };
+  static SYS_POST_MESSAGE_FAILED = { BODY: "Message not sent", LEVEL: "warning" };
   static SYS_GET_CANDIDATE_DETAILS_FAILED = { BODY: "Error receiving CV №__1__", LEVEL: "danger" };
   static SYS_GET_CANDIDATE_DETAILS_OK = { BODY: "CV №__1__ downloaded", LEVEL: "light" };
   static LOGS_IS_EMPTY = "Log is empty";
 }
 
-export const TR = En;
+export const TR = Ru;

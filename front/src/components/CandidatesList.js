@@ -102,7 +102,7 @@ class CandidatesList extends Component {
     }
 
     return (
-        <ListGroup style={{maxHeight:"90vh", overflowY: 'auto', padding: "2px", width: "100%" }}>
+        <ListGroup style={{height:"100%", overflowY: 'auto', padding: "2px", width: "100%", paddingBottom:"200px" }}>
           {this.candidateElements.reverse()}
         </ListGroup>
     );
