@@ -215,7 +215,7 @@ class App extends PureComponent {
     return (
       <Container id="Main-container" fluid>
         <HotKeys
-          keyName={"ctrl+enter, up, down, alt+shift+t, alt+t, ctrl+space"}
+          keyName={"up, down, alt+shift+t, alt+t, ctrl+space"}
           onKeyDown={this.onKeyDown.bind(this)}
         >
           <Row style={{ height: "100%" }}>

@@ -36,13 +36,6 @@ class TopPanel extends PureComponent {
     ) {
       return true;
     }
-    if (
-      prevProps.shortcutInfo !== this.props.shortcutInfo &&
-      this.props.shortcutInfo.keyPressed === "ctrl+enter"
-    ) {
-      this.clickFind();
-      return true;
-    }
 
     if (
       prevProps.credentials.login !== this.props.credentials.login &&

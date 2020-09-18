@@ -209,7 +209,6 @@ export function postAttaches(refreshCallback) {
     alert("Selected tags must not be empty!");
     return;
   }
-console.log(selectedTags);
   let fd = new FormData();
   this.state.attaches.forEach(att => {
     fd.append("upl", att);
@@ -242,11 +241,6 @@ console.log(selectedTags);
       json.forEach(c => {
         updateTags(t, c);
       });
-      if (refreshCallback) {
-        sleep(2000).then(() => {
-          refreshCallback("ctrl+enter");
-        });
-      }
       this.setState({
         logMessages: logRotate(this.state.logMessages, TR.SYS_POST_ATTACHES_OK)
       });
@@ -326,7 +320,6 @@ export function getDuplicates(candidateId) {
     })
     .then(json => {
       if (!json) return [];
-      console.log(json);
       this.setState({
         duplicates: json
       });

@@ -23,41 +23,11 @@ class CandidateDetails extends PureComponent {
         this.createStatusSelector = createStatusSelector.bind(this);
     }
 
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     if (nextProps.messages && ((nextProps.messages !== this.state.messages) || nextProps.messages.length !== this.state.messages.length)) {
-    //         this.setState({
-    //             messages: nextProps.messages
-    //         });
-    //         return true;
-    //     }
-
-    //     if (nextState.isModalOpen !== this.state.isModalOpen) {
-    //         return true;
-    //     }
-
-    //     if (this.props.candidateInfo &&
-    //         nextProps.shortcutInfo &&
-    //         this.props.shortcutInfo &&
-    //         nextProps.shortcutInfo.counter !== this.props.shortcutInfo.counter &&
-    //         nextProps.shortcutInfo.keyPressed === 'alt+shift+g') {
-
-    //         this.changeTagWindow();
-    //         return true;
-    //     }
-
-    //     if ((this.props.candidateInfo === null && nextProps.candidateInfo) || this.props.candidateInfo !== nextProps.candidateInfo) {
-    //         return true;
-    //     }
-
-    //     return false;
-    // }
-
 
     render() {
         let statusSelector, id, cTags = [], messageControls, candHeader, dupElements = [], buttonChangeName, buttonChangeTag;
         let candidateInfo = this.props.candidateInfo;
         let duplicates = this.props.duplicates ? this.props.duplicates : [];
-        console.log(duplicates);
 
         if (candidateInfo) {
 
@@ -78,16 +48,17 @@ class CandidateDetails extends PureComponent {
 
             messageControls = (
                 <div style={{ align: 'center' }}>
-                    <Input type="textarea" style={{ margin: '0px' }} placeholder={TR.ENTER_MESSAGE_HERE}
-                        onChange={(e) => this.setState({ message: e.target.value })} />
+                    <Input onKeyPress={(e) => {
+                        if (e.charCode === 13 && e.ctrlKey) {
+                            this.sendMessage();
+                        }
+                    }} type="textarea" style={{ margin: '0px' }} placeholder={TR.ENTER_MESSAGE_HERE}
+                        onChange={(e) => this.setState({ message: e.target.value })} value={this.state.message}
+                    />
 
                     <Button type="primary"
                         onClick={() => {
                             this.sendMessage();
-                            sleep(1000).then(() => {
-                                this.props.getTags();
-                                this.props.openCandidateDetails(this.props.candidateInfo.id)
-                            })
                         }}>
                         {TR.SEND}
                     </Button>
@@ -143,11 +114,18 @@ class CandidateDetails extends PureComponent {
         );
     }
 
-    sendMessage() {
+
+    async sendMessage() {
         this.setState({
             isModalOpen: true
         });
-        this.props.postMessage(this.state.message, this.props.candidateInfo.id, this.props.credentials.id);
+        if (await this.props.postMessage(this.state.message, this.props.candidateInfo.id, this.props.credentials.id)) {
+            this.setState({ message: '' });
+        };
+        sleep(1000).then(() => {
+            this.props.getTags();
+            this.props.openCandidateDetails(this.props.candidateInfo.id)
+        })
     }
 
     changeTagWindow() {
