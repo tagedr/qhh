@@ -61,7 +61,7 @@ const app = express()
             next();
             return;
         }
-        if (!req.session || !req.session.credentials) {
+        if (!req.session || !req.session.credentials || !req.session.credentials.login) {
             res.sendStatus(401);
             return;
         }

@@ -32,7 +32,7 @@ export default router => {
             throw createStatusCodeError(504);
         }
 
-        if (req.session.credentials) {
+        if (req.session.credentials && req.session.credentials.login) {
             console.log(req.session.credentials);
             console.log("session time: " + req.session.cookie.maxAge / 1000);
 
@@ -45,11 +45,7 @@ export default router => {
                 return;
             }
         }
-
-
         req.session.credentials = {};
-        req.session.credentials.login = credentials.login;
-        req.session.save();
         function ldapAuth(credentials) {
             console.log("ldap1 ");
             const _ldap = loginLdap(credentials.login, credentials.pass, async (ldapAccessOk) => {
@@ -65,18 +61,33 @@ export default router => {
                         console.log("login found in db. auth is ok!");
                         req.session.credentials.login = users[0].login;
                         req.session.credentials.id = users[0].id;
-                        console.log(req.session.credentials);
-                        // req.session.save();
                         res.send(users);
                     }
 
                 } else {
+                    req.session.destroy();
                     res.sendStatus(401);
                 }
             });
 
         }
-        ldapAuth(credentials)
+
+        if (eval(process.env.LDAP_USAGE)) {
+            ldapAuth(credentials)
+        } else {
+            const users = await User.query()
+                .where('login', credentials.login)
+                .andWhere(raw('`pass` = SHA1( \'' + credentials.pass + '\' )'));
+
+            console.log(users);
+            if (users.length > 0) {
+                req.session.credentials.login = users[0].login;
+                req.session.credentials.id = users[0].id;
+                res.send(users);
+            }
+            else
+                res.sendStatus(401);
+        }
 
     });
 
@@ -101,7 +112,7 @@ export default router => {
                 attaches: [{
                     name: f.originalname,
                     filename: f.filename + "." + ext,
-                    md5:  md5File.sync(f.path + "." + ext)
+                    md5: md5File.sync(f.path + "." + ext)
                 }]
             });
 
