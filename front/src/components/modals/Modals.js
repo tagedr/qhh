@@ -7,11 +7,10 @@ import { delInterview, postInterview } from "../../functions/requestHandlers";
 import { TR } from "../../functions/tr";
 
 export default class Modals extends Component {
-
+    
     render() {
         const title = this.props && this.props.title ? this.props.title : '';
         return (
-            <div>
                 <Modal style={this.props.style ? this.props.style : {}} size="lg" isOpen={this.props.isOpen}
                     toggle={this.props.toggle}>
                     <ModalHeader toggle={this.props.toggle}>{title}</ModalHeader>
@@ -19,7 +18,6 @@ export default class Modals extends Component {
                         {this.props.body ? this.props.body : ''}
                     </ModalBody>
                 </Modal>
-            </div>
         );
     }
 

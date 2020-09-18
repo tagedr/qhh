@@ -74,40 +74,21 @@ class TopPanel extends PureComponent {
         : "";
     return (
       <Row>
-        <Col>
-          <InputGroup
-            onChange={e =>
-              this.setState({
-                queryStr: `${e.target.value}`
-              })
-            }
-          >
+        <Col xs="4" xl="4">
+          <InputGroup onChange={e => this.setState({ queryStr: `${e.target.value}` })}>
             <Input
               autoComplete="on"
               type="search"
               placeholder={TR.ENTER_TAGS}
               defaultValue={this.state.queryStr}
             />
-
-            {/* <InputGroupButtonDropdown addonType="prepend" isOpen={this.state.splitButtonOpen}
-                                                      toggle={this.toggleSplit}> */}
             <Button outline color="primary" onClick={() => this.clickFind()}>
               {TR.FIND_UPDATED}
             </Button>
-            {/* <DropdownToggle split outline/>
-                                <DropdownMenu>
-                                    <DropdownItem>{TR.FIND_CREATED}</DropdownItem>
-                                  </DropdownMenu> */}
-            {/* </InputGroupButtonDropdown> */}
-            {/* <Input type="date" name="dateFrom" id="dateFrom" placeholder={TR.FROM_DATE}
-                                   onChange={this.dateFromHandler}/>
-                                   <Input type="date" name="dateTo" id="dateTo" placeholder={TR.TO_DATE}
-                                  onChange={this.dateToHandler}/> */}
-            {/* <Button color="link">3d</Button>
-              <Button color="link">7d</Button> */}
+
           </InputGroup>
         </Col>
-        <Col sm={{ size: 3, order: 0, offset: 0 }}>
+        <Col xs="4" md="4" xl="5">
           <InputGroup >
             <Input
               disabled={this.state.authDisabled}
@@ -136,9 +117,9 @@ class TopPanel extends PureComponent {
             </Button>
           </InputGroup>
         </Col>
-        <Col sm={{ size: "auto", offset: 1 }}>
+        <Col style={{paddingLeft: "4px", paddingRight:"4px"}}>
           <Button
-            style={{ width: "100%", height: "100%", textAlign: "center" }}
+            
             color={msgCounter.length > 0 ? "primary" : "link"}
             onClick={() => this.readMessages()}
           >
@@ -196,7 +177,7 @@ class TopPanel extends PureComponent {
             <p key={i} style={{ margin: "0px" }}>
               {time + " "}
               {candIdUrl}
-              {TR.BY + msg.users[0].login + " : " + msg.body.substring(0, 50)}
+              {TR.BY}<b>{msg.users[0].login}</b>{" : " + msg.body.substring(0, 1000)}
             </p>
           );
           break;
@@ -222,7 +203,7 @@ class TopPanel extends PureComponent {
     });
 
     const body = (
-      <div>
+      <div style={{wordWrap: "break-word"}}>
         {TR.USER_MESSAGES}:<br />
         {userMessages}
         <br />
@@ -248,7 +229,7 @@ class TopPanel extends PureComponent {
       </div>
     );
 
-    this.props.toggleModal(TR.UNREAD_NEW_CHANGES, body);
+    this.props.toggleModal(TR.UNREAD_NEW_CHANGES, body, { minWidth: "80%" });
   }
 
   clickLogin() {

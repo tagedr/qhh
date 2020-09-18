@@ -227,7 +227,7 @@ class App extends PureComponent {
             </Col>
 
 
-            <Col xs="2" xl="3" style={{ padding: "0px"}}>
+            <Col xs="2" xl="2" style={{ padding: "0px"}}>
               {candidateDetails}
             </Col>
 

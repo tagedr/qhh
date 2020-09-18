@@ -24,8 +24,8 @@ export default class MessagesList extends Component {
     render() {
         let msgs = this.state.messages && this.state.messages.length > 0 ? this.state.messages : [];
         let ret = [];
-        const chatStyle = {margin: '10px'};
-        const sysStyle = {margin: '10px', fontSize: '0.7rem'};
+        const chatStyle = { wordWrap: "break-word", marginTop: '6px', marginBottom:"6px", backgroundColor: '#f2f2f2'};
+        const sysStyle = { wordWrap: "break-word", marginTop: '6px', marginBottom:"6px", fontSize: '0.7rem'};
         msgs.forEach((m, i) => {
             let time = moment(m.updated).local();
             const isSysMessage = m.type !== 0 ? true : false;
@@ -46,7 +46,7 @@ export default class MessagesList extends Component {
         ret.reverse();
 
         return (
-            <div style={{fontSize: '0.8rem', marginTop: "10px"}}>
+            <div style={{fontSize: '0.8rem', marginTop: "10px", maxHeight:"75vh", overflowY: 'scroll', padding: "2px"}}>
                 {ret.length > 0 ? ret : TR.NO_MESSAGES}
             </div>
         )

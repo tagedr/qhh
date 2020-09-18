@@ -27,14 +27,14 @@ export class Ru {
     'Вход. Введите логин и пароль, после чего нажмите кнопку "' +
     Ru.ENTER +
     '".';
-  static NOTIFICATIONS = "Уведомления";
+  static NOTIFICATIONS = "Оповещения";
   static DROP_NEW_CANDIDATES_HERE = "Перетащите сюда новых кандидатов!";
   static NOTHING_TO_UPLOAD = "Нечего загружать";
   static UPLOAD = "Загрузить ";
   static _NEW_CANDIDATES = "новых кандидатов";
   static NEW_CANDIDATES = "Новые кандидаты";
-  static FIND_UPDATED = "Поиск";
-  static FIND_CREATED = "Поиск по созданию";
+  static FIND_UPDATED = "Найти";
+  static FIND_CREATED = "Найти созданные";
   static USER_MESSAGES = "Сообщения";
   static TAGS_CHANGED = "Изменения тегов";
   static ACTIONS = "Действия";
@@ -54,7 +54,9 @@ export class Ru {
 
 export class En {
   static INTERVIEWS = "Interviews";
-  static TAGS_AND_COLORS = "Tags list and colors";
+  static ADD_NEW_INTERVIEW = "Add interview";
+  static ADD_NEW_INTERVIEW_FOR = "Add interview for";
+  static TAGS_AND_COLORS = "Tag list";
   static ENTER_MESSAGE_HERE = "Enter message here";
   static CHANGE_CANDIDATE_TAGS_FOR = "Change cTags for";
   static NO_MESSAGES = "No messages";
@@ -70,7 +72,6 @@ export class En {
   static UNREAD_NEW_CHANGES = "New changes";
   static ENTER_NEW_TAGS = "Enter new tags";
   static SEND = "Send";
-  static ADD_NEW_INTERVIEW = "Add new interview";
   static COMMENTS = "Comments";
   static DATE_TIME = "Date and time";
   static CANDIDATE = "Candidate";
@@ -78,12 +79,13 @@ export class En {
   static WELCOME_USER = "Welcome user";
   static ENTER_LOGIN_AND_PASS =
     'Login. Enter login and password, then press "' + En.ENTER + '" button.';
-  static NOTIFICATIONS = "Notifications";
+  static NOTIFICATIONS = "Messages";
   static DROP_NEW_CANDIDATES_HERE = "Drop new candidates here!";
   static NOTHING_TO_UPLOAD = "Nothing to upload";
   static UPLOAD = "Upload ";
-  static NEW_CANDIDATES = "new candidate(s)";
-  static FIND_UPDATED = "Find updated";
+  static NEW_CANDIDATES = "New candidate(s)";
+  static _NEW_CANDIDATES = "new candidate(s)";
+  static FIND_UPDATED = "Find";
   static FIND_CREATED = "Find created";
   static USER_MESSAGES = "User messages";
   static TAGS_CHANGED = "Tags changes";
@@ -99,6 +101,7 @@ export class En {
   static SYS_POST_MESSAGE_FAILED = { BODY: "Message not sent (reload the page and try again)", LEVEL: "warning" };
   static SYS_GET_CANDIDATE_DETAILS_FAILED = { BODY: "Error receiving CV №__1__", LEVEL: "danger" };
   static SYS_GET_CANDIDATE_DETAILS_OK = { BODY: "CV №__1__ downloaded", LEVEL: "light" };
+  static LOGS_IS_EMPTY = "Log is empty";
 }
 
 export const TR = En;

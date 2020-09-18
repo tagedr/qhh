@@ -61,7 +61,7 @@ function addInterviewModal() {
         />
     );
 
-    this.props.toggleModal(TR.ADD_NEW_INTERVIEW_FOR + " [" + cInfo.id + "] - " + cInfo.name, modalBody);
+    this.props.toggleModal(TR.ADD_NEW_INTERVIEW_FOR + " [" + cInfo.id + "] - " + cInfo.name, modalBody,{minWidth:"80%"});
 }
 
 export function createTagsList(tags) {

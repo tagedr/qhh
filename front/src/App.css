@@ -50,6 +50,13 @@ html {
     /* height: 92vh !important; */
 }
 
+*{
+    -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+
 #root {
     height: 100% !important;
     font-family: "Lucida Console", Monaco, monospace !important;

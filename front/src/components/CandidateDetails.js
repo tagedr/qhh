@@ -63,7 +63,7 @@ class CandidateDetails extends Component {
 
             id = candidateInfo.id;
             candHeader = (
-                <a href={process.env.REACT_APP_CLIENT_URL_PREFIX+":"+process.env.REACT_APP_PORT + "/candidate?id=" + id}> {id + " - " + candidateInfo.name} </a>);
+                <a href={process.env.REACT_APP_CLIENT_URL_PREFIX+":"+process.env.REACT_APP_PORT + "/candidate?id=" + id}>{id + " - " + candidateInfo.name}</a>);
 
             cTags = "[ " + candidateInfo.tags.map((t) => t.name).join(' , ') + " ]";
 
@@ -95,8 +95,9 @@ class CandidateDetails extends Component {
 
         return (
                 <Row key={id}>
-                    <Col>
-                        <h5 style={{margin:"6px", height: "80px"}}>
+                    <Col style={{margin:"8px", width: "200px"}}>
+                        <h5 >
+                            [<img style={{width:"18px", height:"18px"}} src={"edit-black-18dp.svg"}/>]
                             {candHeader}
                         </h5>
                         <Button style={{padding: '0'}}
@@ -135,7 +136,7 @@ class CandidateDetails extends Component {
             openCandidateDetails={this.props.openCandidateDetails}
         />);
 
-        this.props.toggleModal(TR.CHANGE_CANDIDATE_TAGS_FOR + " [" + cInfo.id + "] - " + cInfo.name, modalBody);
+        this.props.toggleModal(TR.CHANGE_CANDIDATE_TAGS_FOR + " [" + cInfo.id + "] - " + cInfo.name, modalBody, {minWidth:"80%"});
     }
 }
 
