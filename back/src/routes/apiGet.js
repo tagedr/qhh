@@ -66,7 +66,7 @@ export default router => {
   router.get("/tags/:tags/candidates", async (req, res) => {
 
     const tags = JSON.parse(req.params.tags);
-    console.log(tags);
+
     if (!tags || tags.length === 0) throw createStatusCodeError(404);
 
     const tagsInDB = await Tag.query()
@@ -207,8 +207,6 @@ export default router => {
       .distinct()
       .skipUndefined()
       .orderBy("created");
-
-    console.log(ret);
 
     res.send(ret);
   });

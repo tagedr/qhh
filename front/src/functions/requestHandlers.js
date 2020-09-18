@@ -208,7 +208,7 @@ export function postAttaches(refreshCallback) {
     alert("Selected tags must not be empty!");
     return;
   }
-
+console.log(selectedTags);
   let fd = new FormData();
   this.state.attaches.forEach(att => {
     fd.append("upl", att);
@@ -355,9 +355,29 @@ export function getInterviews() {
 
 export function updateTags(tags, candidateInfo, reloadDetailsCallback) {
   if (!candidateInfo || !tags || tags.length === 0) return;
+  tags.forEach((t,i)=>{
+    if (!t.name || t.name === 0) 
+      tags.splice(i,1);
+  });
 
   let ret = { id: candidateInfo.id, name: candidateInfo.name, tags: tags };
   return fetch(urlPrefix + "/tags/update", Object.assign({}, defaultHeaders,
+    {
+      method: "POST",
+      body: JSON.stringify(ret),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })).then(response => {
+      if (reloadDetailsCallback) reloadDetailsCallback(candidateInfo.id);
+      return response.ok;
+    });
+}
+
+export function updateCandidateName(name, candidateInfo, reloadDetailsCallback) {
+
+  let ret = { id: candidateInfo.id, name: name };
+  return fetch(urlPrefix + "/candidate/update", Object.assign({}, defaultHeaders,
     {
       method: "POST",
       body: JSON.stringify(ret),

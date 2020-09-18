@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {Button, Col, Container, Input, Row} from 'reactstrap';
+import React, { Component } from 'react';
+import { Button, Col, Container, Input, Row } from 'reactstrap';
 import MessagesList from './MessagesList'
 
-import {createStatusSelector} from "../functions/prerenderUtils"
-import {ChangeCandidateTags} from "./modals/Modals"
+import { createStatusSelector } from "../functions/prerenderUtils"
+import { ChangeCandidateTags, ChangeCandidateName } from "./modals/Modals"
 
-import {TR} from "../functions/tr";
+import { TR } from "../functions/tr";
 
 class CandidateDetails extends Component {
 
@@ -56,16 +56,18 @@ class CandidateDetails extends Component {
 
 
     render() {
-        let statusSelector, id, cTags, messageControls, candHeader;
+        let statusSelector, id, cTags = [], messageControls, candHeader;
         let candidateInfo = this.props.candidateInfo;
 
         if (candidateInfo) {
 
             id = candidateInfo.id;
             candHeader = (
-                <a href={process.env.REACT_APP_CLIENT_URL_PREFIX+":"+process.env.REACT_APP_PORT + "/candidate?id=" + id}>{id + " - " + candidateInfo.name}</a>);
+                <a href={process.env.REACT_APP_CLIENT_URL_PREFIX + ":" + process.env.REACT_APP_PORT + "/candidate?id=" + id}>{id + " - " + candidateInfo.name}</a>);
 
-            cTags = "[ " + candidateInfo.tags.map((t) => t.name).join(' , ') + " ]";
+            candidateInfo.tags.map((t) => {
+                cTags.push(<a href={process.env.REACT_APP_CLIENT_URL_PREFIX + ":" + process.env.REACT_APP_PORT + "/tag?name=" + t.name}>{t.name}</a>)
+            });
 
             statusSelector = this.createStatusSelector(
                 this.props.tagsInfo,
@@ -75,18 +77,18 @@ class CandidateDetails extends Component {
             );
 
             messageControls = (
-                <div style={{align: 'center'}}>
-                    <Input type="textarea" style={{margin: '0px'}} placeholder={TR.ENTER_MESSAGE_HERE}
-                           onChange={(e) => this.setState({message: e.target.value})}/>
+                <div style={{ align: 'center' }}>
+                    <Input type="textarea" style={{ margin: '0px' }} placeholder={TR.ENTER_MESSAGE_HERE}
+                        onChange={(e) => this.setState({ message: e.target.value })} />
 
                     <Button type="primary"
-                            onClick={() => {
-                                this.sendMessage();
-                                sleep(1000).then(() => {
-                                    this.props.getTags();
-                                    this.props.openCandidateDetails(this.props.candidateInfo.id)
-                                })
-                            }}>
+                        onClick={() => {
+                            this.sendMessage();
+                            sleep(1000).then(() => {
+                                this.props.getTags();
+                                this.props.openCandidateDetails(this.props.candidateInfo.id)
+                            })
+                        }}>
                         {TR.SEND}
                     </Button>
                 </div>
@@ -94,25 +96,36 @@ class CandidateDetails extends Component {
         }
 
         return (
-                    <Col style={{margin:"0px",padding:"2px",height:"100%",maxHeight:"100%"}}>
-                        <h5 >
-                            [<img style={{width:"18px", height:"18px"}} src={"edit-black-18dp.svg"}/>]
-                            {candHeader}
-                        </h5>
-                        <Button style={{padding: '0'}}
-                                color="link"
-                                onClick={
-                                    () => this.changeTagWindow()
-                                }>
-                            {cTags}
-                        </Button>
-                        <br/>
-                        {statusSelector}
+            <Col style={{ margin: "0px", padding: "2px", height: "100%", maxHeight: "100%" }}>
+                { !this.props.candidateInfo
+                    ? <div style={{ color: "#BBBBBB", display: "flex", height: "90%", width: "100%", textAlign: "center", alignItems: "center", justifyContent: "center" }}>
+                        <br /><br />{TR.MUST_SELECT_CANDIDATE_FOR_DETAILS}
+                    </div>
+                    : ""}
+                {this.props.candidateInfo ? (<div style={{ paddingTop: "6px" }}>
 
-                        {messageControls}
-                        <MessagesList messages={this.props.messages}/>
+                    <Button color="light" style={{ padding: "0px" }}><img style={{ width: "24px", height: "24px" }} src={"account_box-24px.svg"}
+                        onClick={
+                            () => this.changeNameWindow()
+                        }
+                    /></Button>
 
-                    </Col>
+                    <Button color="light" style={{ padding: "0px" }}><img style={{ width: "24px", height: "24px" }} src={"label-24px.svg"}
+                        onClick={
+                            () => this.changeTagWindow()
+                        }
+                    /></Button>
+                    {cTags.map((tag) => <b> {tag} </b>)}
+                </div>) : ""}
+                <h5 style={{ wordWrap: "break-word", paddingTop: "6px" }}>
+                    {candHeader}
+                </h5>
+                {statusSelector}
+
+                {messageControls}
+                <MessagesList messages={this.props.messages} />
+
+            </Col>
 
         );
     }
@@ -134,14 +147,29 @@ class CandidateDetails extends Component {
             openCandidateDetails={this.props.openCandidateDetails}
         />);
 
-        this.props.toggleModal(TR.CHANGE_CANDIDATE_TAGS_FOR + " [" + cInfo.id + "] - " + cInfo.name, modalBody, {minWidth:"80%"});
+
+        this.props.toggleModal(TR.CHANGE_CANDIDATE_TAGS_FOR + " [" + cInfo.id + "] - " + cInfo.name, modalBody, { minWidth: "80%" });
     }
+
+    changeNameWindow() {
+        let cInfo = this.props.candidateInfo;
+
+        let modalBody = (<ChangeCandidateName
+            toggleModal={this.props.toggleModal}
+            candidateInfo={cInfo}
+            updateCandidateName={this.props.updateCandidateName}
+            openCandidateDetails={this.props.openCandidateDetails}
+        />);
+
+
+        this.props.toggleModal(TR.CHANGE_CANDIDATE_NAME_FOR + " [" + cInfo.id + "]", modalBody, { minWidth: "80%" });
+    };
 }
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
-  
+}
+
 
 CandidateDetails.propTypes = {};
 

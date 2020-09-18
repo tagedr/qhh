@@ -48,7 +48,7 @@ export default class MessagesList extends Component {
         return (
             <div style={{fontSize: '0.8rem', marginTop: "10px", height:"100%", maxHeight:"100%",
             minHeight:"600px", overflowY: 'scroll', padding: "2px", paddingBottom:"300px"}}>
-                {ret.length > 0 ? ret : TR.NO_MESSAGES}
+                {ret.length > 0 ? ret : ""}
             </div>
         )
 

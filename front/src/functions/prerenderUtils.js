@@ -23,8 +23,8 @@ export function createStatusSelector(tags, candInfo, openCandidateDetails) {
             let statusStyle = {
                 backgroundColor: "#" + tag.color,
                 margin: "1px",
-                paddingLeft: "3px",
-                paddingRight: "3px"
+                paddingLeft: "2px",
+                paddingRight: "2px"
             };
 
             const name = tag.name.split("");
@@ -48,7 +48,7 @@ export function createStatusSelector(tags, candInfo, openCandidateDetails) {
                 </Button>)
         }
     });
-    return <Col style={{paddingLeft: "0px"}}>{ret}</Col>
+    return <Col style={{paddingLeft: "0px", paddingRight: "0px"}}>{ret}</Col>
 }
 
 function addInterviewModal() {

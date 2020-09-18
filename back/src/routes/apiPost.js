@@ -123,7 +123,7 @@ export default router => {
             });
 
         insertedGraph.forEach((cand) => {
-            addSystemMessage("Candidate added", 1, cred.id, cand.id).then();
+            addSystemMessage("Candidate added '"+cand.name+"'", 1, cred.id, cand.id).then();
         });
 
         res.send(insertedGraph);
@@ -197,19 +197,20 @@ export default router => {
         candidateInfo.tags = retTags;
 
         // Flush all relations between current candidate and tags
-        let c = await Candidate.query()
-            .upsertGraph({ id: candidateInfo.id, tags: null }, {
-                relate: true,
-                unrelate: true,
-                update: false,
-                noUpdate: false,
-                noInsert: false,
-                noDelete: false
-            });
+        // let c = await Candidate.query()
+        //     .upsertGraph({ id: candidateInfo.id, tags: null }, {
+        //         relate: false,
+        //         unrelate: true,
+        //         insert: false,
+        //         update: true,
+        //         noUpdate: false,
+        //         noInsert: true,
+        //         noDelete: false
+        //     });
 
         // Insert new relations between current candidate and tags
         let ret = await Candidate.query()
-            .upsertGraph(candidateInfo, { relate: true, noUpdate: false, noInsert: true });
+            .upsertGraph(candidateInfo, { relate: true, unrelate:true, noUpdate: false, insert: false, noInsert: true });
 
         // Create new system message
         const body = candidateInfo.tags.map((m) => {
@@ -217,8 +218,35 @@ export default router => {
         }).join(", ")
         addSystemMessage("Tags changed to [ " + body + " ]", 2, req.session.credentials.id, candidateInfo.id).then();
 
+        let cleanRet = await Tag.query().withGraphFetched('candidates').where('color','=','0').whereNull('priority');
+
+        // Clean from unused empty tags
+        cleanRet.forEach(async (t) => {
+            if(t.candidates.length === 0){
+                await Tag.query().deleteById(t.id);
+            }
+        });
+
         res.send(ret);
     });
+
+    router.post('/candidate/update', async (req, res) => {
+
+        let candidateInfo = req.body;
+        if (!candidateInfo || !candidateInfo.name) {
+            throw createStatusCodeError(505);
+        }
+             
+        // Insert new relations between current candidate and tags
+        let ret = await Candidate.query()
+            .upsertGraph(candidateInfo, { relate: true, noUpdate: false, noInsert: true });
+
+        // Create new system message
+        addSystemMessage("Name changed to '" + candidateInfo.name + "'", 2, req.session.credentials.id, candidateInfo.id).then();
+
+        res.send(ret);
+    });
+
 
 
     // ---------------------------------------------------------------------------------------------
@@ -288,8 +316,6 @@ export default router => {
         const msg = addSystemMessage("Interview is scheduled for: " + moment(interview.begin).format("YY.MM.DD HH:mm") +
             ", interviewer: " + interview.interviewer[0].login,
             5, req.session.credentials.id, interview.candidates[0].id);
-
-        console.log(msg);
 
         res.send(ret);
     });
@@ -380,7 +406,6 @@ export default router => {
             }]
         };
 
-        console.error(message);
         return await Message.query()
             .upsertGraph(message, { relate: true, noUpdate: false, noInsert: false });
     }

@@ -2,8 +2,11 @@ export class Ru {
   static INTERVIEWS = "Собеседования";
   static TAGS_AND_COLORS = "Теги";
   static ENTER_MESSAGE_HERE = "Введите сообщение";
-  static CHANGE_CANDIDATE_TAGS_FOR = "Изменение тегов для кандидата";
+  static CHANGE_CANDIDATE_TAGS_FOR = "Изменение тегов кандидата";
+  static CHANGE_CANDIDATE_NAME_FOR = "Изменение имени кандидата";
   static NO_MESSAGES = "Сообщений нет";
+  static MUST_SELECT_CANDIDATE_FOR_DETAILS = "Здесь отображается история выбранного кандидата";
+  static MUST_SELECT_CANDIDATE_FOR_VC = "Здесь отображается резюме выбранного кандидата";
   static ENTER_TAGS = "Введите теги для поиска ( например: 'cpp, new' ) ";
   static FROM_DATE = "С даты";
   static TO_DATE = "До даты";
@@ -15,6 +18,7 @@ export class Ru {
   static ADDED = " добавлен ";
   static UNREAD_NEW_CHANGES = "Новые изменения";
   static ENTER_NEW_TAGS = "Введите новые теги";
+  static ENTER_NEW_NAME = "Введите новое имя";
   static SEND = "Отправить";
   static ADD_NEW_INTERVIEW = "Назначить собеседование";
   static ADD_NEW_INTERVIEW_FOR = "Назначить собеседование для";
@@ -107,6 +111,11 @@ export class En {
   static SYS_GET_CANDIDATE_DETAILS_FAILED = { BODY: "Error receiving CV №__1__", LEVEL: "danger" };
   static SYS_GET_CANDIDATE_DETAILS_OK = { BODY: "CV №__1__ downloaded", LEVEL: "light" };
   static LOGS_IS_EMPTY = "Log is empty";
+  static ENTER_NEW_NAME = "Enter new name";
+  static CHANGE_CANDIDATE_TAGS_FOR = "Change candidate's tags";
+  static CHANGE_CANDIDATE_NAME_FOR = "Change candidate's name";
+  static MUST_SELECT_CANDIDATE_FOR_DETAILS = "The history of the selected candidate is displayed here";
+  static MUST_SELECT_CANDIDATE_FOR_VC = "The CV of the selected candidate is displayed here";
 }
 
 export const TR = Ru;

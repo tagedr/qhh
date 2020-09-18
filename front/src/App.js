@@ -20,6 +20,7 @@ import {
   postAttaches,
   getMessages,
   updateTags,
+  updateCandidateName,
   postMessage,
   heartbeatAndFetchMsg,
   parseUrlRequest,
@@ -77,6 +78,7 @@ class App extends PureComponent {
     this.clickSendNewCandidates = postAttaches.bind(this);
     this.getMessages = getMessages.bind(this);
     this.updateTags = updateTags.bind(this);
+    this.updateCandidateName = updateCandidateName.bind(this);
     this.postMessage = postMessage.bind(this);
 
 
@@ -175,6 +177,7 @@ class App extends PureComponent {
     const candidateDetails = (<CandidateDetails
       getTags={this.getTags}
       updateTags={this.updateTags}
+      updateCandidateName={this.updateCandidateName}
       candidateInfo={selCandInfo}
       messages={st.candidateMessages}
       postMessage={this.postMessage}
@@ -206,36 +209,38 @@ class App extends PureComponent {
     />)
     return (
       <Container id="Main-container" fluid>
-      <HotKeys
-        keyName={"ctrl+enter, up, down, alt+shift+t, alt+t, ctrl+space"}
-        onKeyDown={this.onKeyDown.bind(this)}
-      >
-          <Row style={{height:"100%"}}> 
-            <Col xs="2" xl="2" style={{ height:"100%", paddingLeft: "2px", padding: "0px"}}>
-                {dropZone}
-                {candidatesList}
+        <HotKeys
+          keyName={"ctrl+enter, up, down, alt+shift+t, alt+t, ctrl+space"}
+          onKeyDown={this.onKeyDown.bind(this)}
+        >
+          <Row style={{ height: "100%" }}>
+            <Col xs="2" xl="2" style={{ height: "100%", paddingLeft: "2px", paddingRight: "1px" }}>
+              {dropZone}
+              {candidatesList}
             </Col>
 
-            <Col style={{height:"100%", padding: "0px"}}>
-                {topPanel}
-                <div style={{height:"84%", minHeight:"84%", maxHeight:"88%"}}>
-                {attacheViewer}
+            <Col style={{ border: "1px solid #f2f2f2", height: "100%", padding: "0px" }}>
+              {topPanel}
+              <div style={{ height: "86%", minHeight: "86%", maxHeight: "88%" }}>
+                {!st.selectedCandidateInfo ?
+                  <div style={{ color: "#BBBBBB", display: "flex", height: "90%", width: "100%", textAlign: "center", alignItems: "center", justifyContent: "center" }}><br /><br />{TR.MUST_SELECT_CANDIDATE_FOR_VC}</div>
+                  : attacheViewer}
 
-                </div>
-                {bottomPanel}
-                {modals}
+              </div>
+              {bottomPanel}
+              {modals}
             </Col>
 
 
-            <Col xs="3" xl="3" style={{height:"100%", padding: "0px"}}>
+            <Col xs="3" xl="3" style={{ paddingLeft: "1px", height: "100%", padding: "0px" }}>
               {candidateDetails}
             </Col>
 
 
 
           </Row>
-      </HotKeys>
-        </Container>
+        </HotKeys>
+      </Container>
     );
   }
 

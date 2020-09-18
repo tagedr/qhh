@@ -124,6 +124,35 @@ export class ChangeCandidateTags extends PureComponent {
 
 }
 
+export class ChangeCandidateName extends PureComponent {
+
+    render() {
+        let cName = this.props.candidateInfo.name;
+        
+        let updateCandidateName = () => {
+            if (!cName || cName.length === 0)
+                return;
+  
+            this.props.updateCandidateName(cName, this.props.candidateInfo, this.props.openCandidateDetails)
+        };
+
+        return <FormGroup row style={{ width: '100%' }}>
+            <InputGroup style={{ padding: '10px' }} type="textarea" name="text">
+                <Input autofocus type="textarea" style={{ margin: '10px' }} defaultValue={cName}
+                    placeholder={TR.ENTER_NEW_TAGS} onChange={(e) => cName = e.target.value} />
+                <Col sm={{ size: 12, offset: 0 }}>
+                    <Button style={{ width: "100%" }} color="primary"
+                        onClick={() => {
+                            updateCandidateName();
+                            this.props.toggleModal();
+                        }}>{TR.SEND}</Button>
+                </Col>
+            </InputGroup>
+        </FormGroup>;
+    }
+
+}
+
 export class AddInterview extends PureComponent {
     constructor(props) {
         super(props);

@@ -75,7 +75,7 @@ class CandidatesList extends Component {
         const candItemText = (
           <div>
             <b style={{ marginBottom: 0, height: "50%" }}>{c.id}</b>
-            <p style={{ marginBottom: 0, lineHeight: 1 }}>{c.name}</p>
+            <p style={{ marginBottom: 0, lineHeight: 1, paddingRight: "1px", wordWrap:"break-word" }}>{c.name}</p>
           </div>
         );
 

@@ -10,6 +10,11 @@ module.exports = {
             database: process.env.DB_DATABASE,
             charset: process.env.DB_CHARSET,
             debug: eval(process.env.DB_DEBUG)
+        },    
+        pool: {
+            min: 1,
+            max: 10,
+            idleTimeoutMillis: 5000
         }
     },
 };
