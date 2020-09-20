@@ -82,6 +82,11 @@ class CandidateDetails extends PureComponent {
                     () => this.changeTagWindow()
                 }
             /></Button>);
+            this.duplicatesDetails = (
+                <div style={{maxHeight:"60px", overflowY: 'auto'}}>
+                    {duplicates.length > 0 ? TR.POSSIBLE_DUPLICATES : ""}
+                    {duplicates.length > 0 ? dupElements.map((dup) => <b> {dup} </b>) : ""}
+                </div>);
         }
 
         return (
@@ -101,8 +106,7 @@ class CandidateDetails extends PureComponent {
                     <h5 style={{ wordWrap: "break-word", paddingTop: "6px" }}>
                         {candHeader}
                     </h5>
-                    {duplicates.length > 0 ? TR.POSSIBLE_DUPLICATES : ""}
-                    {duplicates.length > 0 ? dupElements.map((dup) => <b> {dup} </b>) : ""}
+                    {this.duplicatesDetails}
                     {statusSelector}
 
                     {messageControls}

@@ -100,20 +100,15 @@ export default router => {
       if (!candidateAttIds.includes(att.id))
         dupAttIds = dupAttIds.concat(att.id);
     })
-    const dupsByHash = await Attaches.relatedQuery('candidates')
+    let dupsAll = await Attaches.relatedQuery('candidates')
       .for(dupAttIds)
 
-    if (dupsByName.length > 0) {
-      console.warn("duplicates by Name : " + dupsByName);
-    }
+    dupsByName.forEach(dup => {
+      if (! dupsAll.filter(dup2 => dup.id === dup2.id).length > 0)
+        dupsAll = dupsAll.concat(item);
+    })
 
-    if (dupsByHash.length > 0) {
-      console.warn("duplicates by md5 : " + dupsByHash);
-    }
-
-
-
-    res.send([].concat(dupsByName, dupsByHash));
+    res.send(Array.from(dupsAll));
   });
 
   // ---------------------------------------------------------------------------------------------

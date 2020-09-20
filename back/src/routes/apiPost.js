@@ -126,27 +126,6 @@ export default router => {
         res.send(insertedGraph);
     });
 
-
-    function getHash(path, cb) {
-        var fs = require('fs');
-        var crypto = require('crypto');
-
-        var fd = fs.createReadStream(path);
-        var hash = crypto.createHash('sha1');
-        hash.setEncoding('hex');
-
-        fd.on('end', function () {
-            hash.end();
-            // *** Here is my problem ***
-            console.log(hash.read());
-            if (cb) {
-                cb(null, hash.read());
-            }
-        });
-
-        fd.pipe(hash);
-    };
-
     // ---------------------------------------------------------------------------------------------
     /* Input:
         {
