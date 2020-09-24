@@ -1,0 +1,13 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  app:
+    build: .
+    ports:
+      - ${HOST}:${BACK_PORT}:${BACK_PORT}
+    volumes:
+      - "../back:/app/back"
+    working_dir: "/app/back"
+    entrypoint: bash -c "pnpm install && pnpm start"

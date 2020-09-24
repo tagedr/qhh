@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d build",
-    "start": "nodemon --delay 1 --watch ./src --exec \"pnpm run debug\"",
-    "debug": "pnpm run build && node --nolazy --inspect build/app"
+    "dev": "nodemon --delay 1 --watch ./src --exec \"pnpm run debug\"",
+    "debug": "pnpm run build && node --nolazy --inspect build/app",
+    "start": "pnpm run build && node build/app"
   },
   "babel": {
     "presets": [

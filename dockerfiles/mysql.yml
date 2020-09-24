@@ -2,13 +2,13 @@
 version: '3.1'
 
 services:
-
+  
   db:
     image: mysql:5.7
     ports:
-      - "31013:3306"
+      - ${DB_HOST}:${DB_PORT}:3306
     environment:
-      MYSQL_ROOT_PASSWORD: dbpassword
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       TZ: "Europe/Moscow"
     volumes:
       - ./db_dumps:/docker-entrypoint-initdb.d

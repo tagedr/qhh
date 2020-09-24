@@ -1,3 +1,5 @@
 node_modules
 pnpm-lock.yaml
 package-lock.json
+.pnpm-store
+/dockerfiles/db_dumps/2_add_dev_user.sql
