@@ -1,0 +1,20 @@
+{
+  "routesFile": "./routes.json",
+  "hot": false,
+  "minify": false,
+  "longTermCaching": true,
+  "logLevel": "debug",
+  "env": {
+    "development": {
+       "hot": true,
+       "longTermCaching": false
+    },
+    "production": {
+       "compileOnStartup": false,
+       "jsUrl": "/assets/",
+       "logLevel": "error",
+       "minify": true
+    }
+  },
+  "webpackConfig" : "./webpack.config.js"
+}

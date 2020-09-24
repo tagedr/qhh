@@ -3,7 +3,7 @@ version: '3.1'
 
 services:
 
-  app:
+  front:
     build: .
     ports:
       - ${HOST}:${PORT}:${PORT}
@@ -11,3 +11,4 @@ services:
       - "../front:/app/front"
     working_dir: "/app/front"
     entrypoint: bash -c "pnpm install && pnpm start"
+    stdin_open: true
