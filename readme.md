@@ -1,3 +1,7 @@
+# QuickHeadHunting
+Service for quick sorting and tracking CV statuses.
+Based on react + nodejs + mysql 5.7 
+
 # Requirements
 ## node & pnpm
 Versions: `node >= 12.18.2`, `pnpm >= 5.4.0`
@@ -10,7 +14,7 @@ Google how to install them on your system
 # Deploy and run
 ## Run db, back and front at once
 ### Configuration
-1. Create `.env` from `env.example` and set your exposed ports, IP, auth type ... at:
+Create `.env` from `env.example` and set your exposed ports, IP, auth type ... at:
 - `./front/.env`
 - `./back/.env`
 IP (or url) for back and front must be the same (otherwise auth will not work).
@@ -22,10 +26,11 @@ Using ldap or not - user must be in put db.
 Tags without color, priority and candidates automatically will be erased.
 
 All CVs are uploading to `back\build\public\uploads`
+### Run
+1. Run `pnpm run all`
+2. Go to http://127.0.0.1:31011 `user` `123`
 
-2. Run `pnpm run all`
-3. Go to http://127.0.0.1:31011 `user` `123`
-
+### Notes
 Default ports:
 - 31011 - front
 - 31012 - back
