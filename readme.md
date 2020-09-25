@@ -11,7 +11,8 @@ Based on react + nodejs + mysql 5.7
 - internal or ldap auth;
 - changing status of selected candidate by status selector;
 - add interview (by select "interview" tag) and tracking all planned interview;
-- auto finding duplicates of selected candidate (by name and md5 of CV).
+- auto finding duplicates of selected candidate (by name and md5 of CV);
+- changing gui lang in `tr.js` by set `TR = En` or `TR = Ru`
 
 # Requirements
 ## node & pnpm
