@@ -120,4 +120,4 @@ export class En {
   static POSSIBLE_DUPLICATES = "Possible duplicates:"
 }
 
-export const TR = Ru;
+export const TR = En;
