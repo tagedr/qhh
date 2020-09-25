@@ -1,6 +1,17 @@
 # QuickHeadHunting
 Service for quick sorting and tracking CV statuses.
+
 Based on react + nodejs + mysql 5.7 
+
+## Features:
+- adding CVs (single or bulk) on any tag;
+- links for tags (states+candidate groups) or specific candidate
+- adding candidates to multiple tags;
+- comments and change history;
+- internal or ldap auth;
+- changing status of selected candidate by status selector;
+- add interview (by select "interview" tag) and tracking all planned interview;
+- auto finding duplicates of selected candidate (by name and md5 of CV).
 
 # Requirements
 ## node & pnpm
