@@ -65,7 +65,7 @@ export class En {
   static INTERVIEWS = "Interviews";
   static ADD_NEW_INTERVIEW = "Add interview";
   static ADD_NEW_INTERVIEW_FOR = "Add interview for";
-  static TAGS_AND_COLORS = "Tag list";
+  static TAGS_AND_COLORS = "Tags";
   static ENTER_MESSAGE_HERE = "Enter message here";
   static CHANGE_CANDIDATE_TAGS_FOR = "Change cTags for";
   static NO_MESSAGES = "No messages";

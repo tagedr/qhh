@@ -226,7 +226,7 @@ class App extends PureComponent {
 
             <Col style={{ border: "1px solid #f2f2f2", height: "100%", padding: "0px" }}>
               {topPanel}
-              <div style={{ height: "88%", minHeight: "88%", maxHeight: "89%" }}>
+              <div style={{ height: "92%", minHeight: "92%", maxHeight: "92%" }}>
                 {!st.selectedCandidateInfo ?
                   <div style={{ color: "#BBBBBB", display: "flex", height: "90%", width: "100%", textAlign: "center", alignItems: "center", justifyContent: "center" }}>
                     <br /><br />{TR.MUST_SELECT_CANDIDATE_FOR_VC}

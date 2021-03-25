@@ -10,9 +10,9 @@
   "scripts": {
     "front-dev": "pnpm start --prefix ./front",
     "back-dev": "pnpm run dev --prefix ./back",
-    "front": "docker-compose -f dockerfiles/front.yml --env-file \"./front/.env\" -p qhh up --build -d",
-    "back": "docker-compose -f dockerfiles/back.yml --env-file \"./back/.env\" -p qhh up --build -d",
     "db": "docker-compose -f dockerfiles/mysql.yml --env-file \"./back/.env\" -p qhh up -d",
+    "back": "docker-compose -f dockerfiles/back.yml --env-file \"./back/.env\" -p qhh up --build -d",
+    "front": "docker-compose -f dockerfiles/front.yml --env-file \"./front/.env\" -p qhh up --build -d",
     "all": "pnpm run db && pnpm run back && pnpm run front",
     "stop-front": "docker-compose -f dockerfiles/front.yml --env-file \"./front/.env\" -p qhh stop",
     "rm-front": "docker-compose -f dockerfiles/front.yml --env-file \"./front/.env\" -p qhh rm -f",

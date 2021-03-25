@@ -1,7 +1,8 @@
 export function logRotate(logs, newEntry, limit = 10) {
+    if (!newEntry) return [];
     const nEntry = {
-      BODY: newEntry.BODY,
-      LEVEL: newEntry.LEVEL,
+      BODY: newEntry.BODY ? newEntry.BODY : '',
+      LEVEL: newEntry.LEVEL? newEntry.LEVEL : 'danger',
       date: Date.now()
     };
     if (logs) {
