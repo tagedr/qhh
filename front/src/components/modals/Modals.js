@@ -238,7 +238,7 @@ export class AddInterview extends PureComponent {
     clickAdd() {
         const ts = this.state;
         const tp = this.props;
-        let datetime = moment(ts.date + " " + ts.time, "YYYY-MM-DD HH:mm");
+        let datetime = moment(ts.date + " " + ts.time, "YYYY-MM-DD HH:mm").utc();
         let { wUser, interviewer } = {};
         tp.users.forEach((u) => {
             if (u.login === ts.welcomeUser)
