@@ -13,6 +13,15 @@
     "front": "docker-compose -f dockerfiles/front.yml --env-file \"./front/.env\" -p qhh up --build -d",
     "back": "docker-compose -f dockerfiles/back.yml --env-file \"./back/.env\" -p qhh up --build -d",
     "db": "docker-compose -f dockerfiles/mysql.yml --env-file \"./back/.env\" -p qhh up -d",
-    "all": "pnpm run db && pnpm run back && pnpm run front"
+    "all": "pnpm run db && pnpm run back && pnpm run front",
+    "stop-front": "docker-compose -f dockerfiles/front.yml --env-file \"./front/.env\" -p qhh stop",
+    "rm-front": "docker-compose -f dockerfiles/front.yml --env-file \"./front/.env\" -p qhh rm -f",
+    "stop-back": "docker-compose -f dockerfiles/back.yml --env-file \"./back/.env\" -p qhh stop",
+    "rm-back": "docker-compose -f dockerfiles/back.yml --env-file \"./back/.env\" -p qhh rm -f",
+    "stop-db": "docker-compose -f dockerfiles/mysql.yml --env-file \"./back/.env\" -p qhh stop",
+    "rm-db": "docker-compose -f dockerfiles/mysql.yml --env-file \"./back/.env\" -p qhh rm -f",
+    "stop-all": "pnpm run stop-front && pnpm run stop-back && pnpm run stop-db",
+    "rm-all": "pnpm run rm-front && pnpm run rm-back && pnpm run rm-db",
+    "clean-all": "pnpm run stop-all && pnpm run rm-all"
   }
 }
