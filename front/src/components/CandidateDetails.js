@@ -33,10 +33,10 @@ class CandidateDetails extends PureComponent {
 
             id = candidateInfo.id;
             candHeader = (
-                <a href={process.env.REACT_APP_CLIENT_URL_PREFIX + ":" + process.env.REACT_APP_PORT + "/candidate?id=" + id}>{id + " - " + candidateInfo.name}</a>);
+                <a href={process.env.REACT_APP_CLIENT_URL_PREFIX + "/candidate?id=" + id}>{id + " - " + candidateInfo.name}</a>);
 
             candidateInfo.tags.map((t) => {
-                cTags.push(<a href={process.env.REACT_APP_CLIENT_URL_PREFIX + ":" + process.env.REACT_APP_PORT + "/tag?name=" + t.name}>{t.name}</a>)
+                cTags.push(<a href={process.env.REACT_APP_CLIENT_URL_PREFIX + "/tag?name=" + t.name}>{t.name}</a>)
             });
 
             statusSelector = this.createStatusSelector(
@@ -67,7 +67,7 @@ class CandidateDetails extends PureComponent {
 
             if (duplicates.length > 0) {
                 duplicates.forEach((dup, i) => {
-                    dupElements.push(<a href={process.env.REACT_APP_CLIENT_URL_PREFIX + ":" + process.env.REACT_APP_PORT + "/candidate?id=" + dup.id}>{dup.id}</a>)
+                    dupElements.push(<a href={process.env.REACT_APP_CLIENT_URL_PREFIX + "/candidate?id=" + dup.id}>{dup.id}</a>)
                 })
             }
 

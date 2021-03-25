@@ -7,17 +7,17 @@ import { delInterview, postInterview } from "../../functions/requestHandlers";
 import { TR } from "../../functions/tr";
 
 export default class Modals extends Component {
-    
+
     render() {
         const title = this.props && this.props.title ? this.props.title : '';
         return (
-                <Modal style={this.props.style ? this.props.style : {}} size="lg" isOpen={this.props.isOpen}
-                    toggle={this.props.toggle}>
-                    <ModalHeader toggle={this.props.toggle}>{title}</ModalHeader>
-                    <ModalBody>
-                        {this.props.body ? this.props.body : ''}
-                    </ModalBody>
-                </Modal>
+            <Modal style={this.props.style ? this.props.style : {}} size="lg" isOpen={this.props.isOpen}
+                toggle={this.props.toggle}>
+                <ModalHeader toggle={this.props.toggle}>{title}</ModalHeader>
+                <ModalBody>
+                    {this.props.body ? this.props.body : ''}
+                </ModalBody>
+            </Modal>
         );
     }
 
@@ -96,10 +96,11 @@ export class ChangeCandidateTags extends PureComponent {
             if (!cTags || cTags.length === 0)
                 return;
             let ret = [];
-            let splitted = cTags.toLowerCase().replace(/ /g, '').split(',');
+            let splitted = cTags.toLowerCase().split(' ');
             if (splitted) {
                 splitted.forEach((t, i) => {
-                    ret[i] = ({ name: t });
+                    if (t.length > 0)
+                        ret[i] = ({ name: t });
                 })
             }
 
@@ -108,9 +109,14 @@ export class ChangeCandidateTags extends PureComponent {
         };
 
         return <FormGroup row style={{ width: '100%' }}>
-            <InputGroup style={{ padding: '10px' }} type="textarea" name="text">
-                <Input autofocus type="textarea" style={{ margin: '10px' }} defaultValue={initTags.join(', ')}
-                    placeholder={TR.ENTER_NEW_TAGS} onChange={(e) => cTags = e.target.value} />
+            <InputGroup style={{ padding: '10px' }} name="text">
+                <Input autofocus type="text" style={{ margin: '10px' }} defaultValue={initTags.join(' ')}
+                    placeholder={TR.ENTER_NEW_TAGS} onChange={(e) => cTags = e.target.value} onKeyPress={event => {
+                        if (event.key === "Enter") {
+                            sendTags();
+                            this.props.toggleModal();
+                        }
+                    }}/>
                 <Col sm={{ size: 12, offset: 0 }}>
                     <Button style={{ width: "100%" }} color="primary"
                         onClick={() => {
@@ -126,26 +132,34 @@ export class ChangeCandidateTags extends PureComponent {
 
 export class ChangeCandidateName extends PureComponent {
 
-    render() {
-        let cName = this.props.candidateInfo.name;
-        
-        let updateCandidateName = () => {
-            if (!cName || cName.length === 0)
-                return;
-  
-            this.props.updateCandidateName(cName, this.props.candidateInfo, this.props.openCandidateDetails)
-        };
+    cName = this.props.candidateInfo.name;
 
-        return <FormGroup row style={{ width: '100%' }}>
-            <InputGroup style={{ padding: '10px' }} type="textarea" name="text">
-                <Input autofocus type="textarea" style={{ margin: '10px' }} defaultValue={cName}
-                    placeholder={TR.ENTER_NEW_TAGS} onChange={(e) => cName = e.target.value} />
+    updateCandidateName = () => {
+        if (!this.cName || this.cName.length === 0)
+            return;
+
+        this.props.updateCandidateName(this.cName, this.props.candidateInfo, this.props.openCandidateDetails)
+    };
+
+
+    clickChangeName = () => {
+        this.updateCandidateName();
+        this.props.toggleModal();
+    }
+
+    render() {
+        
+        return <FormGroup row style={{ width: '100%' }} >
+            <InputGroup style={{ padding: '10px' }} name="text">
+                <Input autofocus type="text" style={{ margin: '10px' }} defaultValue={this.cName}
+                    placeholder={TR.ENTER_NEW_TAGS} onChange={(e) => this.cName = e.target.value} onKeyPress={event => {
+                        if (event.key === "Enter") {
+                            this.clickChangeName();
+                        }
+                    }} />
                 <Col sm={{ size: 12, offset: 0 }}>
                     <Button style={{ width: "100%" }} color="primary"
-                        onClick={() => {
-                            updateCandidateName();
-                            this.props.toggleModal();
-                        }}>{TR.SEND}</Button>
+                        onClick={this.clickChangeName}>{TR.SEND}</Button>
                 </Col>
             </InputGroup>
         </FormGroup>;

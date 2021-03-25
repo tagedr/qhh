@@ -144,7 +144,7 @@ class TopPanel extends PureComponent {
     let tagsChanges = [];
     let interviewsChanges = [];
 
-    const urlCandidateIdPrefix = process.env.REACT_APP_CLIENT_URL_PREFIX + ":" + process.env.REACT_APP_PORT + "/candidate?id=";
+    const urlCandidateIdPrefix = process.env.REACT_APP_CLIENT_URL_PREFIX + "/candidate?id=";
 
     unreadMsgs.reverse();
     unreadMsgs.forEach((msg, i) => {
